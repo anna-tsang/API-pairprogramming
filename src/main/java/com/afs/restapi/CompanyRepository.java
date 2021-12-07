@@ -37,4 +37,8 @@ public class CompanyRepository {
                 .findFirst()
                 .orElseThrow(NoMatchIdFoundException::new);
     }
+
+    public List<Employee> getEmployeeListByCompany(Integer id) {
+        return companyList.stream().filter(company -> company.getId().equals(id)).findFirst().get().getEmployees();
+    }
 }

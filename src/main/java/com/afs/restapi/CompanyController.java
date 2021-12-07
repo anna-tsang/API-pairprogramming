@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("company")
+@RequestMapping("companies")
 public class CompanyController {
     public CompanyRepository companyRepository;
 
@@ -30,5 +30,10 @@ public class CompanyController {
     @GetMapping("/{id}/employees")
     public List<Employee> getEmployeeListByCompany(@PathVariable Integer id){
         return companyRepository.getEmployeeListByCompany(id);
+    }
+
+    @GetMapping(params = {"page","pageSize"})
+    public List<Company> displayCompany(@RequestParam Integer page, @RequestParam Integer pageSize){
+        return companyRepository.displayCompany(page,pageSize);
     }
 }

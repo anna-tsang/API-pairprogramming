@@ -1,6 +1,7 @@
 package com.afs.restapi;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,5 +59,12 @@ public class CompanyController {
             company.setEmployees(updatedCompany.getEmployees());
         }
         return companyRepository.save(id,company);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{id}")
+    public Company deleteCompany(@PathVariable Integer id){
+        Company company = companyRepository.findById(id);
+        return companyRepository.delete(id);
     }
 }

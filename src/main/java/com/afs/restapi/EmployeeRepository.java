@@ -33,4 +33,9 @@ public class EmployeeRepository {
     public List<Employee> findByGender(String gender) {
         return employees.stream().filter(employee -> employee.getGender().equals(gender)).collect(Collectors.toList());
     }
+
+    public List<Employee> displayEmployee(Integer page, Integer pageSize) {
+        return employees.stream().skip((long)(page-1) * pageSize).limit(pageSize).collect(Collectors.toList());
+    }
 }
+

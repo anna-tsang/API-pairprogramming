@@ -31,4 +31,9 @@ public class EmployeeController {
     public List<Employee> getEmployeesByGender(@RequestParam String gender){
         return employeeRepository.findByGender(gender);
     }
+
+    @GetMapping(params = {"page","pageSize"})
+    public List<Employee> displayEmployee(@RequestParam Integer page, @RequestParam Integer pageSize){
+        return employeeRepository.displayEmployee(page,pageSize);
+    }
 }

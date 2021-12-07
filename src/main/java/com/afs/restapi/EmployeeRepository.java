@@ -12,6 +12,11 @@ public class EmployeeRepository {
 
     public EmployeeRepository(){
         employees.add(new Employee (1,"Anna",20,"F",5000));
+        employees.add(new Employee (2,"Johnson",20,"M",4000));
+        employees.add(new Employee (3,"Apple",20,"F",4000));
+        employees.add(new Employee (4,"April",20,"M",4000));
+        employees.add(new Employee (5,"May",20,"M",4000));
+        employees.add(new Employee (6,"June",20,"M",4000));
     }
 
     public List<Employee> findAll() {

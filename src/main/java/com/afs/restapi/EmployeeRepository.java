@@ -52,7 +52,7 @@ public class EmployeeRepository {
         Employee employee = findById(id);
         employees.remove(employee);
         employees.add(updatedEmployee);
-        return null;
+        return employee;
     }
 }
 

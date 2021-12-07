@@ -22,7 +22,7 @@ public class EmployeeRepository {
         return employees.stream()
                 .filter(employee -> employee.getId().equals(id))
                 .findFirst()
-                .orElseThrow();
+                .orElseThrow(NoMatchIdFoundException::new);
     }
 
     public List<Employee> findByGender(String gender) {

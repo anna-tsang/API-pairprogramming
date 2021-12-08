@@ -1,5 +1,6 @@
 package com.afs.restapi.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,6 +62,24 @@ public class CompanyServiceTest {
         // then
         assertEquals(company, actual);
     }
+
+    @Test
+    void should_return_companies_when_display_company_given_page_and_pageSize() {
+        // given
+        List<Company> companies = new ArrayList<>();
+
+        companies.add(new Company(1, "ABC"));
+        companies.add(new Company(2, "DEF"));
+
+        given(companyRepository.displayCompany(anyInt(), anyInt()))
+                .willReturn(companies);
+
+        // when
+        // then
+        List<Company> actual = companyService.displayCompany(0, 2);
+        assertEquals(companies, actual);
+    }
+
 
 
 

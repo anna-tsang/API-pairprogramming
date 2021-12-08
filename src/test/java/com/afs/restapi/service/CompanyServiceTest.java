@@ -80,6 +80,22 @@ public class CompanyServiceTest {
         assertEquals(companies, actual);
     }
 
+    @Test
+    void should_return_company_when_create_company_given_company() {
+        // given
+        Company company = new Company(1, "Abc");
+
+        given(companyRepository.create(company))
+                .willReturn(company);
+
+        // when
+        // then
+        Company actual = companyService.createCompany(company);
+        assertEquals(company, actual);
+    }
+
+
+
 
 
 

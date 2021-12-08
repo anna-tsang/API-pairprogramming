@@ -26,10 +26,6 @@ public class EmployeeControllerTest {
     @Autowired
     EmployeeRepository employeeRepository;
 
-    //GET "/employees"
-    //prepare data
-    //send request
-    //assertion
     @BeforeEach
     void cleanRepository(){
         employeeRepository.clearAll();

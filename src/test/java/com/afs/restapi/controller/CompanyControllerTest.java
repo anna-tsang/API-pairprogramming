@@ -41,7 +41,7 @@ public class CompanyControllerTest {
     @Test
     void should_return_company_list_when_perform_get_given_companies() throws Exception {
         //given
-        Company company = new Company(1, "Anna Ltd",null);
+        Company company = new Company(1, "Anna Ltd");
         companyRepository.create(company);
         //when
         //then
@@ -54,9 +54,9 @@ public class CompanyControllerTest {
     @Test
     void should_return_company_when_perform_get_given_company_id() throws Exception {
         //given
-        Company company = new Company(1, "Anna Ltd",null);
+        Company company = new Company(1, "Anna Ltd" );
         companyRepository.create(company);
-        Company company2 = new Company(2, "Anna Company",null);
+        Company company2 = new Company(2, "Anna Company" );
         companyRepository.create(company2);
 
         //when
@@ -73,10 +73,9 @@ public class CompanyControllerTest {
         //given
         Employee employee = new Employee(1,"Anna", 20,"M", 20, 1);
         List<Employee> employees = Arrays.asList(employee);
-        Company company = new Company(1, "Anna Ltd",employees);
+        Company company = new Company(1, "Anna Ltd" );
         companyRepository.create(company);
-        Company company2 = new Company(2, "Anna Company",null);
-        companyRepository.create(company2);
+
 
         //when
         //then
@@ -94,11 +93,11 @@ public class CompanyControllerTest {
         //given
         Employee employee = new Employee(1,"Anna", 20,"M", 20, 1);
         List<Employee> employees = Arrays.asList(employee);
-        Company companyA = new Company(1, "Anna Company",employees);
+        Company companyA = new Company(1, "Anna Company");
         companyRepository.create(companyA);
-        Company companyB = new Company(2, "Bnna Company",employees);
+        Company companyB = new Company(2, "Bnna Company");
         companyRepository.create(companyB);
-        Company companyC = new Company(3, "Cnna Company",null);
+        Company companyC = new Company(3, "Cnna Company" );
         companyRepository.create(companyC);
         //when
         mockMvc.perform((MockMvcRequestBuilders.get(COMPANIES_ENDPOINT)
@@ -116,7 +115,7 @@ public class CompanyControllerTest {
         //given
         Employee employee = new Employee(1,"Anna", 20,"M", 20, 1);
         List<Employee> employees = Arrays.asList(employee);
-        Company companyA = new Company(1, "Anna Ltd",employees);
+        Company companyA = new Company(1, "Anna Ltd" );
         companyRepository.create(companyA);
         String newCompany = "{\n" +
                 "        \"companyName\": \"Anna Ltd\",\n" +

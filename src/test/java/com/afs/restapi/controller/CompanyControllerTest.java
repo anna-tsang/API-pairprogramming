@@ -81,14 +81,14 @@ public class CompanyControllerTest {
         Employee employeeJohnson = new Employee(null,"Johnson", 20,"F", 99999, 1);
         employeeRepository.create(employeeJohnson);
 
-        Company company = new Company(1, "Anna Ltd");
-        companyRepository.create(company);
+        Company company1 = new Company(1, "Anna Ltd");
+        companyRepository.create(company1);
         Company company2 = new Company(2, "Anna Company");
         companyRepository.create(company2);
 
         //when
         //then
-        mockMvc.perform((MockMvcRequestBuilders.get(COMPANIES_ENDPOINT + "/{id}/employees", company.getId())))
+        mockMvc.perform((MockMvcRequestBuilders.get(COMPANIES_ENDPOINT + "/{id}/employees", company1.getId())))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").isNumber())
                 .andExpect((jsonPath("$[0].name")).value("Anna"))
@@ -153,5 +153,16 @@ public class CompanyControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.companyName").value("Bnnb Ltd"));
+    }
+
+    @Test
+    void should_delete_company_when_perform_delete_given_company_id() throws Exception {
+        //given
+        Company company = new Company(1, "Anna Ltd");
+        companyRepository.create(company);
+        //when
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.delete(COMPANIES_ENDPOINT+"/{id}", company.getId()))
+                .andExpect(status().isNoContent());
     }
 }

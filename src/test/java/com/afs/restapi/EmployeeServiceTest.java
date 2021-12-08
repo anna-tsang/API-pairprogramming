@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -71,5 +72,22 @@ public class EmployeeServiceTest {
 
         //then
         assertEquals(employee, actual);
+    }
+
+    @Test
+    void should_return_employees_when_perform_get_given_employee_gender() {
+        //given
+        Employee employeeA = new Employee(1, "Anna", 20, "M", 100);
+        Employee employeeB = new Employee(2, "Johnson", 20, "F", 10);
+        List<Employee> employees = new ArrayList<>();
+        employees.add(employeeA);
+        employees.add(employeeB);
+        List<Employee> employeeMale = Arrays.asList(employeeA);
+        //when
+        given(mockEmployeeRepository.findByGender(any()))
+                .willReturn(employeeMale);
+        List<Employee> actual = employeeService.findByGender("M");
+        //then
+        assertEquals(employeeMale, actual);
     }
 }

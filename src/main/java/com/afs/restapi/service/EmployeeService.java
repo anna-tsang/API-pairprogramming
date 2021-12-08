@@ -48,4 +48,8 @@ public class EmployeeService {
     public Employee delete(Integer id) {
         return employeeRepository.delete(id);
     }
+
+    public List<Employee> findEmployeeByCompanyId(Integer companyId){
+        return employeeRepository.findEmployeeByCompanyId(companyId);
+    }
 }

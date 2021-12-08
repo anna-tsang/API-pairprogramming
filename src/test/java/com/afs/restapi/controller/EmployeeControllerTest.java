@@ -185,7 +185,7 @@ public class EmployeeControllerTest {
     @Test
     void should_delete_employee_when_perform_delete_given_employee_id() throws Exception {
         //given
-        Employee employeeAnna = new Employee(1,"Anna", 20,"F", 99999, 1);
+        Employee employeeAnna = new Employee(null,"Anna", 20,"F", 99999, 1);
         employeeRepository.create(employeeAnna);
 
         //when

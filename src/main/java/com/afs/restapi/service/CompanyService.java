@@ -3,9 +3,7 @@ package com.afs.restapi.service;
 import java.util.List;
 
 import com.afs.restapi.entity.Company;
-import com.afs.restapi.entity.Employee;
 import com.afs.restapi.repository.CompanyRepository;
-import com.afs.restapi.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
 @Service

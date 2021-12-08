@@ -141,28 +141,25 @@ public class CompanyControllerTest {
                 .andExpect(jsonPath("$.companyName").value("Anna Ltd"));
     }
 
-//    @Test
-//    void should_update_company_when_peform_put_given_companyId_and_updatedCompany() {
-//        //given
-//        Company company = new Company();
-//        employeeRepository.create(employeeAnna);
-//        String updatedEmployee = "{\n" +
-//                "        \"name\": \"Anna\",\n" +
-//                "        \"age\": 20,\n" +
-//                "        \"gender\": \"F\",\n" +
-//                "        \"salary\": 2021\n" +
-//                "    }";
-//        //when
-//        mockMvc.perform(MockMvcRequestBuilders.put(EMPLOYEE_ENDPOINT + "/{id}",employeeAnna.getId())
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(updatedEmployee))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.id").value(1))
-//                .andExpect(jsonPath("$.name").value("Anna"))
-//                .andExpect(jsonPath("$.gender").value("F"))
-//                .andExpect(jsonPath("$.age").value(20))
-//                .andExpect(jsonPath("$.salary").value(2021));
-//    }
+    @Test
+    void should_update_company_when_peform_put_given_companyId_and_updatedCompany() throws Exception {
+        //given
+        Company company = new Company(1, "Anna Ltd");
+        String updatedCompany = "{\n" +
+                "    \"id\": 1,\n" +
+                "    \"companyName\": \"ABC Ltd\"\n" +
+                "}";
+
+        companyRepository.create(company);
+
+        //when
+        mockMvc.perform(MockMvcRequestBuilders.put(COMPANIES_ENDPOINT + "/{id}", company.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(updatedCompany))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.companyName").value("ABC Ltd"));
+    }
 
 
 }

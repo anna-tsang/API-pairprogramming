@@ -35,7 +35,7 @@ public class EmployeeControllerTest {
     @Test
     void should_get_all_employees_when_perform_get_given_employees() throws Exception {
         //given
-        Employee employee = new Employee(1,"Anna", 20,"F", 99999, 1);
+        Employee employee = new Employee(null,"Anna", 20,"F", 99999, 1);
         employeeRepository.create(employee);
         //when
         //then
@@ -95,9 +95,9 @@ public class EmployeeControllerTest {
     @Test
     void should_return_employees_when_perform_get_given_employee_gender() throws Exception {
         //given
-        Employee employeeAnna = new Employee(1,"Anna", 20,"F", 99999, 1);
+        Employee employeeAnna = new Employee(null,"Anna", 20,"F", 99999, 1);
         employeeRepository.create(employeeAnna);
-        Employee employeeJohnson = new Employee(2,"Johnson", 20,"F", 99999, 1);
+        Employee employeeJohnson = new Employee(null,"Johnson", 20,"F", 99999, 1);
         employeeRepository.create(employeeJohnson);
         //when
         mockMvc.perform(MockMvcRequestBuilders.get(EMPLOYEE_ENDPOINT).param("gender","F"))
@@ -107,11 +107,13 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$[0].gender").value("F"))
                 .andExpect(jsonPath("$[0].age").value(20))
                 .andExpect(jsonPath("$[0].salary").value(99999))
+                .andExpect(jsonPath("$[0].companyId").value(1))
                 .andExpect(jsonPath("$[1].id").value(2))
                 .andExpect(jsonPath("$[1].name").value("Johnson"))
                 .andExpect(jsonPath("$[1].gender").value("F"))
                 .andExpect(jsonPath("$[1].age").value(20))
-                .andExpect(jsonPath("$[1].salary").value(99999));
+                .andExpect(jsonPath("$[1].salary").value(99999))
+                .andExpect(jsonPath("$[1].companyId").value(1));;
     }
 
     @Test

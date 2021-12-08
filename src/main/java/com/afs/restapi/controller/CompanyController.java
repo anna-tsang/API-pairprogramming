@@ -3,6 +3,7 @@ package com.afs.restapi.controller;
 import com.afs.restapi.entity.Company;
 import com.afs.restapi.repository.CompanyRepository;
 import com.afs.restapi.entity.Employee;
+import com.afs.restapi.service.CompanyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,51 +21,51 @@ import java.util.List;
 @RestController
 @RequestMapping("companies")
 public class CompanyController {
-    public CompanyRepository companyRepository;
+    public CompanyService companyService;
 
-    public CompanyController(CompanyRepository companyRepository){
-        this.companyRepository = companyRepository;
+    public CompanyController(CompanyService companyService){
+        this.companyService = companyService;
     }
 
     @GetMapping
     public List<Company> getCompany(){
-        return companyRepository.findAll();
+        return companyService.findAllCompanies();
     }
 
     @GetMapping("/{id}")
     public Company getCompanyById(@PathVariable Integer id){
-        return companyRepository.findById(id);
+        return companyService.findByCompanyId(id);
     }
 
     @GetMapping("/{id}/employees")
     public List<Employee> getEmployeeListByCompany(@PathVariable Integer id){
-        return companyRepository.getEmployeeListByCompany(id);
+        return companyService.getEmployeeListByCompany(id);
     }
 
     @GetMapping(params = {"page","pageSize"})
     public List<Company> displayCompany(@RequestParam Integer page, @RequestParam Integer pageSize){
-        return companyRepository.displayCompany(page,pageSize);
+        return companyService.displayCompany(page,pageSize);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Company createCompany(@RequestBody Company company){
-        return companyRepository.create(company);
+        return companyService.create(company);
     }
 
     @PutMapping("/{id}")
     public Company editCompany(@PathVariable Integer id, @RequestBody Company updatedCompany){
-        Company company = companyRepository.findById(id);
+        Company company = companyService.findByCompanyId(id);
         if(updatedCompany.getCompanyName() != null){
             company.setCompanyName(updatedCompany.getCompanyName());
         }
-        return companyRepository.save(id,company);
+        return companyService.edit(id,company);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public Company deleteCompany(@PathVariable Integer id){
-        Company company = companyRepository.findById(id);
-        return companyRepository.delete(id);
+        Company company = companyService.findByCompanyId(id);
+        return companyService.delete(id);
     }
 }

@@ -48,8 +48,9 @@ public class EmployeeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$",hasSize(1)))
                 .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].age").value(20))
                 .andExpect(jsonPath("$[0].name").value("Anna"))
-                .andExpect(jsonPath("$[0].gender").value(20))
+                .andExpect(jsonPath("$[0].gender").value("F"))
                 .andExpect(jsonPath("$[0].salary").value(99999));
     }
 
@@ -69,8 +70,27 @@ public class EmployeeControllerTest {
                 .content(employee))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.age").value(20))
                 .andExpect(jsonPath("$.name").value("Anna"))
                 .andExpect(jsonPath("$.gender").value("F"))
+                .andExpect(jsonPath("$.salary").value(99999));
+
+        //then
+    }
+
+    @Test
+    void should_return_employee_when_perform_get_given_employee_id() throws Exception {
+        //given
+        Employee employee = new Employee(1,"Anna", 20,"F", 99999);
+        employeeRepository.create(employee);
+
+        //when
+        mockMvc.perform(MockMvcRequestBuilders.get("/employees/{id}", employee.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.name").value("Anna"))
+                .andExpect(jsonPath("$.gender").value("F"))
+                .andExpect(jsonPath("$.age").value(20))
                 .andExpect(jsonPath("$.salary").value(99999));
 
         //then

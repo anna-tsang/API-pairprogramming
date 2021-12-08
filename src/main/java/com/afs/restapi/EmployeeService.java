@@ -38,4 +38,8 @@ public class EmployeeService {
     public List<Employee> displayEmployee(Integer page, Integer pageSize) {
         return employeeRepository.displayEmployee(page,pageSize);
     }
+
+    public Employee create(Employee newEmployee) {
+        return employeeRepository.create(newEmployee);
+    }
 }

@@ -123,4 +123,19 @@ public class EmployeeServiceTest {
 
         assertEquals(firstPageWith2Employees, actual);
     }
+
+    @Test
+    void should_return_employee_when_perform_post_given_new_employee() {
+        //given
+        Employee employee = new Employee(1 ,"Anna", 20, "M", 100);
+
+        //when
+        given(mockEmployeeRepository.create(any()))
+                .willReturn(employee);
+
+        //then
+        Employee newEmployee = new Employee(null ,"Anna", 20, "M", 100);
+        Employee actual = employeeService.create(newEmployee);
+        assertEquals(employee, actual);
+    }
 }

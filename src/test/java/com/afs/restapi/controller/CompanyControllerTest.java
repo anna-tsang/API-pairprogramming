@@ -3,6 +3,7 @@ package com.afs.restapi.controller;
 import com.afs.restapi.entity.Company;
 import com.afs.restapi.entity.Employee;
 import com.afs.restapi.repository.CompanyRepository;
+import com.afs.restapi.repository.EmployeeRepository;
 import org.hamcrest.core.IsNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,9 @@ public class CompanyControllerTest {
     @Autowired
     CompanyRepository companyRepository;
 
+    @Autowired
+    EmployeeRepository employeeRepository;
+
     //GET "/employees"
     //prepare data
     //send request
@@ -36,6 +40,7 @@ public class CompanyControllerTest {
     @BeforeEach
     void cleanRepository(){
         companyRepository.clearAll();
+        employeeRepository.clearAll();
     }
 
     @Test
@@ -71,11 +76,15 @@ public class CompanyControllerTest {
     @Test
     void should_return_employee_list_when_perform_get_given_company_id() throws Exception {
         //given
-        Employee employee = new Employee(1,"Anna", 20,"M", 20, 1);
-        List<Employee> employees = Arrays.asList(employee);
-        Company company = new Company(1, "Anna Ltd" );
-        companyRepository.create(company);
+        Employee employeeAnna = new Employee(null,"Anna", 20,"M", 20, 1);
+        employeeRepository.create(employeeAnna);
+        Employee employeeJohnson = new Employee(null,"Johnson", 20,"F", 99999, 1);
+        employeeRepository.create(employeeJohnson);
 
+        Company company = new Company(1, "Anna Ltd");
+        companyRepository.create(company);
+        Company company2 = new Company(2, "Anna Company");
+        companyRepository.create(company2);
 
         //when
         //then
@@ -113,45 +122,16 @@ public class CompanyControllerTest {
     @Test
     void should_return_new_company_when_perform_post_given_new_company() throws Exception {
         //given
-        Employee employee = new Employee(1,"Anna", 20,"M", 20, 1);
-        List<Employee> employees = Arrays.asList(employee);
-        Company companyA = new Company(1, "Anna Ltd" );
-        companyRepository.create(companyA);
         String newCompany = "{\n" +
-                "        \"companyName\": \"Anna Ltd\",\n" +
-                "        \"employees\": [\n" +
-                "            {\n" +
-                "                \"id\": 1,\n" +
-                "                \"name\": \"Anna\",\n" +
-                "                \"age\": 20,\n" +
-                "                \"gender\": \"F\",\n" +
-                "                \"salary\": 5000\n" +
-                "            },\n" +
-                "            {\n" +
-                "                \"id\": 2,\n" +
-                "                \"name\": \"Johnson\",\n" +
-                "                \"age\": 20,\n" +
-                "                \"gender\": \"M\",\n" +
-                "                \"salary\": 4000\n" +
-                "            },\n" +
-                "            {\n" +
-                "                \"id\": 3,\n" +
-                "                \"name\": \"Apple\",\n" +
-                "                \"age\": 20,\n" +
-                "                \"gender\": \"F\",\n" +
-                "                \"salary\": 4000\n" +
-                "            }\n" +
-                "        ]\n" +
-                "    }";
+                                "    \"companyName\": \"Anna Ltd\"" +
+                                "}";
         //when
-
         //then
         mockMvc.perform((MockMvcRequestBuilders.post(COMPANIES_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newCompany)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNumber())
-                .andExpect((jsonPath("$.companyName").value("Anna Ltd")))
-                .andExpect((jsonPath("$.employees").value(employees)));
+                .andExpect((jsonPath("$.companyName").value("Anna Ltd")));
     }
 }

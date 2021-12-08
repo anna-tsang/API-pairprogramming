@@ -10,9 +10,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(SpringExtension.class)
@@ -33,5 +36,22 @@ public class CompanyServiceTest {
         //when
         List<Company> actual = companyService.findAllCompanies();
         //then
+        assertEquals(companyList, actual);
+    }
+
+    @Test
+    void should_return_company_when_perform_get_given_company_id() {
+        //given
+        Company company1 = new Company(1, "Anna Ltd");
+        Company company2 = new Company(2, "Anna Ltd");
+        List<Company> companyList = new ArrayList<>();
+        companyList.add(company1);
+        companyList.add(company2);
+        //when
+        given(mockCompanyRepository.findById(any()))
+                .willReturn(company1);
+        Company actual = companyService.findByCompanyId(1);
+        //then
+        assertEquals(company1, actual);
     }
 }

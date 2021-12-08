@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.afs.restapi.entity.Company;
 import com.afs.restapi.repository.CompanyRepository;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CompanyService {
     public CompanyRepository companyRepository;
 
@@ -14,8 +14,12 @@ public class CompanyService {
         this.companyRepository = companyRepository;
     }
 
-    public List<Company> getCompany(){
+    public List<Company> getCompanies(){
         return companyRepository.findAll();
+    }
+
+    public Company getCompanyById(Integer id){
+        return companyRepository.findById(id);
     }
 
     public List<Company> displayCompany(Integer page, Integer pageSize){

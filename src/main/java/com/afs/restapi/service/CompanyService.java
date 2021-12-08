@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.afs.restapi.entity.Company;
 import com.afs.restapi.repository.CompanyRepository;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 public class CompanyService {
@@ -25,4 +26,14 @@ public class CompanyService {
         return companyRepository.create(company);
     }
 
+    public Company editCompany(Integer id,Company updatedCompany){
+        Company company = companyRepository.findById(id);
+        if(updatedCompany.getCompanyName() != null){
+            company.setCompanyName(updatedCompany.getCompanyName());
+        }
+        if(updatedCompany.getEmployees() != null){
+            company.setEmployees(updatedCompany.getEmployees());
+        }
+        return companyRepository.save(id,company);
+    }
 }

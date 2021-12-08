@@ -9,6 +9,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,6 +18,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(SpringExtension.class)
@@ -53,5 +56,22 @@ public class CompanyServiceTest {
         Company actual = companyService.findByCompanyId(1);
         //then
         assertEquals(company1, actual);
+    }
+
+
+    @Test
+    void should_return_companies_when_display_company_given_page_and_pageSize() {
+        // given
+        List<Company> companyList = new ArrayList<>();
+
+        companyList.add(new Company(1, "Anna Co"));
+        companyList.add(new Company(2, "Bnnb Co"));
+
+        given(mockCompanyRepository.displayCompany(anyInt(), anyInt()))
+                .willReturn(companyList);
+        // when
+        // then
+        List<Company> actual = companyService.displayCompany(0, 2);
+        assertEquals(companyList, actual);
     }
 }

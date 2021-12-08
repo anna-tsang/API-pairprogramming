@@ -2,6 +2,7 @@ package com.afs.restapi.controller;
 
 import com.afs.restapi.entity.Employee;
 import com.afs.restapi.repository.EmployeeRepository;
+import com.afs.restapi.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,54 +20,47 @@ import java.util.List;
 @RestController
 @RequestMapping("employees")
 public class EmployeeController {
-    public EmployeeRepository employeeRepository;
+    public EmployeeService employeeService;
 
-    public EmployeeController(EmployeeRepository employeeRepository){
-        this.employeeRepository = employeeRepository;
+    public EmployeeController(EmployeeService employeeService){
+        this.employeeService = employeeService;
     }
 
     @GetMapping
     public List<Employee> getEmployee(){
-        return employeeRepository.findAll();
+        return employeeService.findAll();
     }
 
     @GetMapping("/{id}")
     public Employee getEmployeeById(@PathVariable int id){
-        return employeeRepository.findById(id);
+        return employeeService.findById(id);
     }
 
     @GetMapping(params = {"gender"})
     public List<Employee> getEmployeesByGender(@RequestParam String gender){
-        return employeeRepository.findByGender(gender);
+        return employeeService.findByGender(gender);
     }
 
     @GetMapping(params = {"page","pageSize"})
     public List<Employee> displayEmployee(@RequestParam Integer page, @RequestParam Integer pageSize){
-        return employeeRepository.displayEmployee(page,pageSize);
+        return employeeService.displayEmployee(page,pageSize);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Employee createEmployee(@RequestBody Employee employee){
-        return employeeRepository.create(employee);
+        return employeeService.create(employee);
     }
 
     @PutMapping("/{id}")
     public Employee editEmployee(@PathVariable Integer id, @RequestBody Employee updatedEmployee){
-        Employee employee = employeeRepository.findById(id);
-        if(updatedEmployee.getAge() != null){
-            employee.setAge(updatedEmployee.getAge());
-        }
-        if(updatedEmployee.getSalary() != null){
-            employee.setSalary(updatedEmployee.getSalary());
-        }
-        return employeeRepository.save(id,employee);
+        return employeeService.edit(id,updatedEmployee);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public Employee deleteEmployee(@PathVariable Integer id){
-        Employee employee = employeeRepository.findById(id);
-        return employeeRepository.delete(id);
+        Employee employee = employeeService.findById(id);
+        return employeeService.delete(id);
     }
 }

@@ -151,5 +151,6 @@ public class EmployeeServiceTest {
                 .willReturn(employee);
         //then
         Employee actual = employeeService.delete(employee.getId());
+        assertEquals(employee, actual);
     }
 }

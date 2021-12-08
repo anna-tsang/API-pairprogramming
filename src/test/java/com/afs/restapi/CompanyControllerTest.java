@@ -1,5 +1,6 @@
 package com.afs.restapi;
 
+import org.hamcrest.core.IsNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +42,22 @@ public class CompanyControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").isNumber())
                 .andExpect((jsonPath("$[0].companyName").value("Anna Ltd")));
+    }
+
+    @Test
+    void should_return_company_when_perform_get_given_company_id() throws Exception {
+        //given
+        Company company = new Company(1, "Anna Ltd",null);
+        companyRepository.create(company);
+        Company company2 = new Company(2, "Anna Company",null);
+        companyRepository.create(company2);
+
+        //when
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.get(COMPANIES_ENDPOINT + "/{id}", company.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect((jsonPath("$.companyName").value("Anna Ltd")))
+                .andExpect((jsonPath("$.employees").value(IsNull.nullValue())));
     }
 }

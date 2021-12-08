@@ -36,4 +36,9 @@ public class CompanyService {
         }
         return companyRepository.save(id,company);
     }
+
+    public Company deleteCompany(Integer id){
+        Company company = companyRepository.findById(id);
+        return companyRepository.delete(id);
+    }
 }

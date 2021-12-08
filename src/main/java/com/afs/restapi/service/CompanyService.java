@@ -11,22 +11,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class CompanyService {
     public CompanyRepository companyRepository;
-    public EmployeeRepository employeeRepository;
 
-    public CompanyService(EmployeeRepository employeeRepository, CompanyRepository companyRepository){
-        this.employeeRepository = employeeRepository;
+    public CompanyService(CompanyRepository companyRepository){
         this.companyRepository = companyRepository;
     }
 
     public List<Company> getCompanies(){
-        List<Company> companies = companyRepository.findAll();
-
-        companies.forEach(company -> {
-            List<Employee> employees = employeeRepository.findByCompanyId(company.getId());
-            company.setEmployees(employees);
-        });
-
-        return companies;
+        return companyRepository.findAll();
     }
 
     public Company getCompanyById(Integer id){

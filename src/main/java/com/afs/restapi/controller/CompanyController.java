@@ -32,7 +32,14 @@ public class CompanyController {
 
     @GetMapping
     public List<Company> getCompany(){
-        return companyService.getCompanies();
+        List<Company> companies = companyService.getCompanies();
+
+        companies.forEach(company -> {
+            List<Employee> employees = employeeService.findByCompanyId(company.getId());
+            company.setEmployees(employees);
+        });
+
+        return companies;
     }
 
     @GetMapping("/{id}")

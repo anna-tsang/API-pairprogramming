@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,10 +27,6 @@ public class EmployeeControllerTest {
     @Autowired
     EmployeeRepository employeeRepository;
 
-    //GET "/employees"
-    //prepare data
-    //send request
-    //assertion
     @BeforeEach
     void cleanRepository(){
         employeeRepository.clearAll();
@@ -76,7 +73,7 @@ public class EmployeeControllerTest {
     @Test
     void should_return_employee_when_perform_get_given_employee_id() throws Exception {
         //given
-        Employee employee = new Employee(1,"Anna", 20,"F", 99999);
+        Employee employee = new Employee(null,"Anna", 20,"F", 99999);
         employeeRepository.create(employee);
 
         //when
@@ -184,5 +181,7 @@ public class EmployeeControllerTest {
         //then
         mockMvc.perform(MockMvcRequestBuilders.delete(EMPLOYEE_ENDPOINT+"/{id}", employeeAnna.getId()))
                 .andExpect(status().isNoContent());
+
+        assertEquals(0, employeeRepository.findAll().size());
     }
 }

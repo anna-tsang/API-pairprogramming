@@ -58,9 +58,6 @@ public class CompanyController {
         if(updatedCompany.getCompanyName() != null){
             company.setCompanyName(updatedCompany.getCompanyName());
         }
-        if(updatedCompany.getEmployees() != null){
-            company.setEmployees(updatedCompany.getEmployees());
-        }
         return companyRepository.save(id,company);
     }
 

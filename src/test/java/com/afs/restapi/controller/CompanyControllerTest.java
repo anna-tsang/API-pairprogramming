@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -70,7 +71,7 @@ public class CompanyControllerTest {
     @Test
     void should_return_employee_list_when_perform_get_given_company_id() throws Exception {
         //given
-        Employee employee = new Employee(1,"Anna", 20,"M", 20);
+        Employee employee = new Employee(1,"Anna", 20,"M", 20, 1);
         List<Employee> employees = Arrays.asList(employee);
         Company company = new Company(1, "Anna Ltd",employees);
         companyRepository.create(company);
@@ -91,7 +92,7 @@ public class CompanyControllerTest {
     @Test
     void should_given_display_employee_list_when_perform_get_given_page_and_page_size() throws Exception {
         //given
-        Employee employee = new Employee(1,"Anna", 20,"M", 20);
+        Employee employee = new Employee(1,"Anna", 20,"M", 20, 1);
         List<Employee> employees = Arrays.asList(employee);
         Company companyA = new Company(1, "Anna Company",employees);
         companyRepository.create(companyA);
@@ -108,5 +109,50 @@ public class CompanyControllerTest {
                 .andExpect((jsonPath("$[0].companyName").value("Cnna Company")))
                 .andExpect((jsonPath("$[0].employees").value(IsNull.nullValue())));
         //then
+    }
+
+    @Test
+    void should_return_new_company_when_perform_post_given_new_company() throws Exception {
+        //given
+        Employee employee = new Employee(1,"Anna", 20,"M", 20, 1);
+        List<Employee> employees = Arrays.asList(employee);
+        Company companyA = new Company(1, "Anna Ltd",employees);
+        companyRepository.create(companyA);
+        String newCompany = "{\n" +
+                "        \"companyName\": \"Anna Ltd\",\n" +
+                "        \"employees\": [\n" +
+                "            {\n" +
+                "                \"id\": 1,\n" +
+                "                \"name\": \"Anna\",\n" +
+                "                \"age\": 20,\n" +
+                "                \"gender\": \"F\",\n" +
+                "                \"salary\": 5000\n" +
+                "            },\n" +
+                "            {\n" +
+                "                \"id\": 2,\n" +
+                "                \"name\": \"Johnson\",\n" +
+                "                \"age\": 20,\n" +
+                "                \"gender\": \"M\",\n" +
+                "                \"salary\": 4000\n" +
+                "            },\n" +
+                "            {\n" +
+                "                \"id\": 3,\n" +
+                "                \"name\": \"Apple\",\n" +
+                "                \"age\": 20,\n" +
+                "                \"gender\": \"F\",\n" +
+                "                \"salary\": 4000\n" +
+                "            }\n" +
+                "        ]\n" +
+                "    }";
+        //when
+
+        //then
+        mockMvc.perform((MockMvcRequestBuilders.post(COMPANIES_ENDPOINT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(newCompany)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect((jsonPath("$.companyName").value("Anna Ltd")))
+                .andExpect((jsonPath("$.employees").value(employees)));
     }
 }

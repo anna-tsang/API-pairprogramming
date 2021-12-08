@@ -1,5 +1,8 @@
-package com.afs.restapi;
+package com.afs.restapi.service;
 
+import com.afs.restapi.entity.Employee;
+import com.afs.restapi.repository.EmployeeRepository;
+import com.afs.restapi.service.EmployeeService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

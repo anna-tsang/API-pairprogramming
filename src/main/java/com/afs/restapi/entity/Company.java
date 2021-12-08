@@ -1,6 +1,5 @@
-package com.afs.restapi;
+package com.afs.restapi.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Company {

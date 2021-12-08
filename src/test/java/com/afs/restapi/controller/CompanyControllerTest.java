@@ -1,5 +1,8 @@
-package com.afs.restapi;
+package com.afs.restapi.controller;
 
+import com.afs.restapi.entity.Company;
+import com.afs.restapi.entity.Employee;
+import com.afs.restapi.repository.CompanyRepository;
 import org.hamcrest.core.IsNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

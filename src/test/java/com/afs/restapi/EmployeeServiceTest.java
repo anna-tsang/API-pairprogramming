@@ -90,4 +90,37 @@ public class EmployeeServiceTest {
         //then
         assertEquals(employeeMale, actual);
     }
+
+    @Test
+    void should_return_employees_when_perform_get_given_page_and_pageSize() {
+        //given
+        List<Employee> employees = new ArrayList<>();
+
+        Employee employee = new Employee (1,"Anna",20,"F",5000);
+        Employee employee2 = new Employee (2,"Johnson",20,"M",4000);
+
+        employees.add(new Employee (1,"Anna",20,"F",5000));
+        employees.add(new Employee (2,"Johnson",20,"M",4000));
+        employees.add(new Employee (3,"Apple",20,"F",4000));
+        employees.add(new Employee (4,"April",20,"M",4000));
+        employees.add(new Employee (5,"May",20,"M",4000));
+        employees.add(new Employee (6,"June",20,"M",4000));
+
+        List<Employee> firstPageWith2Employees = new ArrayList<>();
+
+        firstPageWith2Employees.add(employee);
+        firstPageWith2Employees.add(employee2);
+
+        Integer page = 0;
+        Integer pageSize = 2;
+
+        //when
+        given(mockEmployeeRepository.displayEmployee(any(), any()))
+                .willReturn(firstPageWith2Employees);
+
+        List<Employee> actual = employeeService.displayEmployee(page, pageSize);
+        //then
+
+        assertEquals(firstPageWith2Employees, actual);
+    }
 }

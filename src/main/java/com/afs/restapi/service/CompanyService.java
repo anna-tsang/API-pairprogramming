@@ -11,6 +11,7 @@ import java.util.List;
 @Service
 public class CompanyService {
     private CompanyRepository companyRepository;
+    private EmployeeService employeeService;
 
     public CompanyService(CompanyRepository companyRepository){
         this.companyRepository = companyRepository;
@@ -33,6 +34,12 @@ public class CompanyService {
 
     public Company findByCompanyId(Integer id) {
         return companyRepository.findById(id);
+    }
+
+    public Company setEmployeeByCompanyId(Integer id){
+        Company company = findByCompanyId(id);
+        company.setEmployees(employeeService.findEmployeeByCompanyId(id));
+        return company;
     }
 
     public List<Company> displayCompany(Integer page, Integer pageSize) {

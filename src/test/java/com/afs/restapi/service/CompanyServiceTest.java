@@ -107,5 +107,17 @@ public class CompanyServiceTest {
         assertEquals(updatedCompany, actual);
     }
 
+    @Test
+    void should_return_company_when_delete_company_given_company_id() {
+        //given
+        Company company = new Company(1, "Anna Ltd");
+        //when
+        given(mockCompanyRepository.delete(anyInt()))
+                .willReturn(company);
+        //then
+        Company actual = companyService.delete(company.getId());
+        assertEquals(company, actual);
+    }
+
 
 }

@@ -153,4 +153,23 @@ public class EmployeeServiceTest {
         Employee actual = employeeService.delete(employee.getId());
         assertEquals(employee, actual);
     }
+
+    @Test
+    void should_return_employees_when_perform_get_given_company_id() {
+        // given
+        Employee employee = new Employee(1,"Anna", 20, "F", 9999, 1);
+        Employee employee2 = new Employee(2,"Anna", 20, "F", 9999, 2);
+
+        List<Employee> employees = Arrays.asList(employee, employee2);
+        List<Employee> employeesWithCompanyId1 = Arrays.asList(employee);
+
+        given(mockEmployeeRepository.findByCompanyId(anyInt()))
+                .willReturn(employeesWithCompanyId1);
+
+        // when
+        // then
+        List<Employee> actual = employeeService.findByCompanyId(employee.getCompanyId());
+        assertEquals(employeesWithCompanyId1, actual);
+    }
+
 }

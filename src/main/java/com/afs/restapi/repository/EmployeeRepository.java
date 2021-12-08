@@ -34,6 +34,12 @@ public class EmployeeRepository {
                 .orElseThrow(EmployeeNotFoundException::new);
     }
 
+    public List<Employee> findByCompanyId(Integer companyId) {
+        return employeeList.stream()
+                .filter(employee -> employee.getCompanyId().equals(companyId))
+                .collect(Collectors.toList());
+    }
+
     public List<Employee> findByGender(String gender) {
         return employeeList.stream().filter(employee -> employee.getGender().equals(gender)).collect(Collectors.toList());
     }

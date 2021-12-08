@@ -119,4 +119,42 @@ public class EmployeeControllerTest {
 
         //then
     }
+
+    @Test
+    void should_return_employees_when_perform_get_given_page_and_pageSize() throws Exception {
+        //given
+        Employee employeeAnna = new Employee(1,"Anna", 20,"M", 20);
+        employeeRepository.create(employeeAnna);
+        Employee employeeJohnson = new Employee(2,"Johnson", 20,"F", 99999);
+        employeeRepository.create(employeeJohnson);
+        Employee employeeGloria = new Employee(3,"Gloria", 20,"M", 745);
+        employeeRepository.create(employeeGloria);
+        Employee employeeBnna = new Employee(4,"Bnna", 20,"F", 5);
+        employeeRepository.create(employeeBnna);
+        Employee employeeCnna = new Employee(5,"Cnna", 20,"F", 99999);
+        employeeRepository.create(employeeCnna);
+
+        //when
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.get("/employees")
+                        .param("page","0")
+                        .param("pageSize","3"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].name").value("Anna"))
+                .andExpect(jsonPath("$[0].gender").value("M"))
+                .andExpect(jsonPath("$[0].age").value(20))
+                .andExpect(jsonPath("$[0].salary").value(20))
+                .andExpect(jsonPath("$[1].id").value(2))
+                .andExpect(jsonPath("$[1].name").value("Johnson"))
+                .andExpect(jsonPath("$[1].gender").value("F"))
+                .andExpect(jsonPath("$[1].age").value(20))
+                .andExpect(jsonPath("$[1].salary").value(99999))
+                .andExpect(jsonPath("$[2].id").value(3))
+                .andExpect(jsonPath("$[2].name").value("Gloria"))
+                .andExpect(jsonPath("$[2].gender").value("M"))
+                .andExpect(jsonPath("$[2].age").value(20))
+                .andExpect(jsonPath("$[2].salary").value(745));
+
+    }
 }

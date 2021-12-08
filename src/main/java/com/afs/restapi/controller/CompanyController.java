@@ -3,6 +3,8 @@ package com.afs.restapi.controller;
 import com.afs.restapi.entity.Company;
 import com.afs.restapi.repository.CompanyRepository;
 import com.afs.restapi.entity.Employee;
+import com.afs.restapi.repository.EmployeeRepository;
+import com.afs.restapi.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,9 +23,11 @@ import java.util.List;
 @RequestMapping("companies")
 public class CompanyController {
     public CompanyRepository companyRepository;
+    public EmployeeService employeeService;
 
-    public CompanyController(CompanyRepository companyRepository){
+    public CompanyController(CompanyRepository companyRepository, EmployeeService employeeService){
         this.companyRepository = companyRepository;
+        this.employeeService = employeeService;
     }
 
     @GetMapping
@@ -38,7 +42,7 @@ public class CompanyController {
 
     @GetMapping("/{id}/employees")
     public List<Employee> getEmployeeListByCompany(@PathVariable Integer id){
-        return companyRepository.getEmployeeListByCompany(id);
+        return employeeService.findByCompanyId(id);
     }
 
     @GetMapping(params = {"page","pageSize"})

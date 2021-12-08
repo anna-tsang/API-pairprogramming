@@ -3,6 +3,7 @@ package com.afs.restapi.controller;
 import com.afs.restapi.entity.Company;
 import com.afs.restapi.entity.Employee;
 import com.afs.restapi.repository.CompanyRepository;
+import com.afs.restapi.repository.EmployeeRepository;
 import org.hamcrest.core.IsNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,9 @@ public class CompanyControllerTest {
 
     @Autowired
     CompanyRepository companyRepository;
+
+    @Autowired
+    EmployeeRepository employeeRepository;
 
     @BeforeEach
     void cleanRepository(){
@@ -68,8 +72,11 @@ public class CompanyControllerTest {
     @Test
     void should_return_employee_list_when_perform_get_given_company_id() throws Exception {
         //given
-        Employee employee = new Employee(1,"Anna", 20,"M", 20, 1);
-        List<Employee> employees = Arrays.asList(employee);
+        Employee employeeAnna = new Employee(null,"Anna", 20,"M", 20, 1);
+        employeeRepository.create(employeeAnna);
+        Employee employeeJohnson = new Employee(null,"Johnson", 20,"F", 99999, 1);
+        employeeRepository.create(employeeJohnson);
+
         Company company = new Company(1, "Anna Ltd");
         companyRepository.create(company);
         Company company2 = new Company(2, "Anna Company");

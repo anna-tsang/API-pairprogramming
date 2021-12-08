@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 
@@ -94,10 +95,34 @@ public class CompanyServiceTest {
         assertEquals(company, actual);
     }
 
+    @Test
+    void should_return_company_when_edit_company_given_company_id_and_updated_company() {
+        // given
+        Company company = new Company(1, "Def");
+        Company updatedCompany = new Company(1, "Cde");
 
+        // when
+        given(companyRepository.findById(anyInt()))
+                .willReturn(company);
 
+        given(companyRepository.save(anyInt(), any(Company.class)))
+                .willReturn(updatedCompany);
 
+        // then
+        Company actual = companyService.editCompany(1, updatedCompany);
+        assertEquals(updatedCompany, actual);
+    }
 
-
+    @Test
+    void should_return_company_when_delete_company_given_company_id() {
+        //given
+        Company company = new Company(1, "ABC");
+        //when
+        given(companyRepository.delete(anyInt()))
+                .willReturn(company);
+        //then
+        Company actual = companyService.deleteCompany(company.getId());
+        assertEquals(company, actual);
+    }
 
 }

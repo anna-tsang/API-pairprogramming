@@ -52,7 +52,6 @@ public class CompanyService {
     }
 
     public Company deleteCompany(Integer id){
-        Company company = companyRepository.findById(id);
         return companyRepository.delete(id);
     }
 }

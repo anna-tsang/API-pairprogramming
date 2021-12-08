@@ -85,7 +85,6 @@ public class CompanyControllerTest {
         companyRepository.create(company1);
         Company company2 = new Company(2, "Anna Company");
         companyRepository.create(company2);
-
         //when
         //then
         mockMvc.perform((MockMvcRequestBuilders.get(COMPANIES_ENDPOINT + "/{id}/employees", company1.getId())))

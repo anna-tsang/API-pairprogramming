@@ -3,19 +3,29 @@ package com.afs.restapi.service;
 import java.util.List;
 
 import com.afs.restapi.entity.Company;
+import com.afs.restapi.entity.Employee;
 import com.afs.restapi.repository.CompanyRepository;
+import com.afs.restapi.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CompanyService {
     public CompanyRepository companyRepository;
+    public EmployeeRepository employeeRepository;
 
     public CompanyService(CompanyRepository companyRepository){
         this.companyRepository = companyRepository;
     }
 
     public List<Company> getCompanies(){
-        return companyRepository.findAll();
+        List<Company> companies = companyRepository.findAll();
+
+        companies.forEach(company -> {
+            List<Employee> employees = employeeRepository.findByCompanyId(company.getId());
+            company.setEmployees(employees);
+        });
+
+        return companies;
     }
 
     public Company getCompanyById(Integer id){

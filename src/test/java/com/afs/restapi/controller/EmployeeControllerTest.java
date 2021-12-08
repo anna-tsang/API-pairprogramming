@@ -60,7 +60,7 @@ public class EmployeeControllerTest {
                 "        \"age\": 20,\n" +
                 "        \"gender\": \"F\",\n" +
                 "        \"salary\": 99999\n" +
-                "    }"; //copy paste JSON from postman
+                "    }";
         //when
         mockMvc.perform(post(EMPLOYEE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)

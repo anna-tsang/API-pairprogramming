@@ -87,4 +87,26 @@ public class CompanyControllerTest {
                 .andExpect((jsonPath("$[0].gender").value("M")))
                 .andExpect((jsonPath("$[0].salary").value(20)));
     }
+
+    @Test
+    void should_given_display_employee_list_when_perform_get_given_page_and_page_size() throws Exception {
+        //given
+        Employee employee = new Employee(1,"Anna", 20,"M", 20);
+        List<Employee> employees = Arrays.asList(employee);
+        Company companyA = new Company(1, "Anna Company",employees);
+        companyRepository.create(companyA);
+        Company companyB = new Company(2, "Bnna Company",employees);
+        companyRepository.create(companyB);
+        Company companyC = new Company(3, "Cnna Company",null);
+        companyRepository.create(companyC);
+        //when
+        mockMvc.perform((MockMvcRequestBuilders.get(COMPANIES_ENDPOINT)
+                        .param("page","1")
+                        .param("pageSize","2")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").isNumber())
+                .andExpect((jsonPath("$[0].companyName").value("Cnna Company")))
+                .andExpect((jsonPath("$[0].employees").value(IsNull.nullValue())));
+        //then
+    }
 }

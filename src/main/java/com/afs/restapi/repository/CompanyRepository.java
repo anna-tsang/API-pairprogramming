@@ -2,6 +2,8 @@ package com.afs.restapi.repository;
 
 import com.afs.restapi.entity.Company;
 import com.afs.restapi.entity.Employee;
+import com.afs.restapi.exception.CompanyNotFoundException;
+import com.afs.restapi.exception.EmployeeNotFoundException;
 import com.afs.restapi.exception.NoMatchIdFoundException;
 import org.springframework.stereotype.Repository;
 
@@ -39,7 +41,7 @@ public class CompanyRepository {
         return companyList.stream()
                 .filter(company -> company.getId().equals(id))
                 .findFirst()
-                .orElseThrow(NoMatchIdFoundException::new);
+                .orElseThrow(CompanyNotFoundException::new);
     }
 
     public List<Employee> getEmployeeListByCompany(Integer id) {

@@ -59,7 +59,6 @@ public class EmployeeControllerTest {
     void should_return_employee_when_perform_post_given_employee() throws Exception {
         //given
         String employee = "{\n" +
-                "        \"id\": 1,\n" +
                 "        \"name\": \"Anna\",\n" +
                 "        \"age\": 20,\n" +
                 "        \"gender\": \"F\",\n" +
@@ -117,8 +116,6 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$[1].gender").value("F"))
                 .andExpect(jsonPath("$[1].age").value(20))
                 .andExpect(jsonPath("$[1].salary").value(99999));
-
-        //then
     }
 
     @Test
@@ -165,7 +162,6 @@ public class EmployeeControllerTest {
         Employee employeeAnna = new Employee(1,"Anna", 20,"F", 99999);
         employeeRepository.create(employeeAnna);
         String updatedEmployee = "{\n" +
-                "        \"id\": 1,\n" +
                 "        \"name\": \"Anna\",\n" +
                 "        \"age\": 20,\n" +
                 "        \"gender\": \"F\",\n" +
@@ -181,8 +177,6 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$.gender").value("F"))
                 .andExpect(jsonPath("$.age").value(20))
                 .andExpect(jsonPath("$.salary").value(2021));
-
-
     }
 
     @Test

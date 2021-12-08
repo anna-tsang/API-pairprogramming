@@ -88,4 +88,24 @@ public class CompanyServiceTest {
         Company actual = companyService.create(company);
         assertEquals(company, actual);
     }
+
+    @Test
+    void should_return_company_when_edit_company_given_company_id_and_updated_company() {
+        // given
+        Company company = new Company(1, "Anna Ltd");
+        Company updatedCompany = new Company(1, "Bnnb Ltd");
+
+        // when
+        given(mockCompanyRepository.findById(anyInt()))
+                .willReturn(company);
+
+        given(mockCompanyRepository.save(anyInt(), any(Company.class)))
+                .willReturn(updatedCompany);
+
+        // then
+        Company actual = companyService.edit(1, updatedCompany);
+        assertEquals(updatedCompany, actual);
+    }
+
+
 }

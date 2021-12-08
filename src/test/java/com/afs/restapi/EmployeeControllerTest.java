@@ -22,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class EmployeeControllerTest {
+    public static final String EMPLOYEE_ENDPOINT = "/employees";
     @Autowired
     MockMvc mockMvc;
 
@@ -44,7 +45,7 @@ public class EmployeeControllerTest {
         employeeRepository.create(employee);
         //when
         //then
-        mockMvc.perform(MockMvcRequestBuilders.get("/employees"))
+        mockMvc.perform(MockMvcRequestBuilders.get(EMPLOYEE_ENDPOINT))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$",hasSize(1)))
                 .andExpect(jsonPath("$[0].id").value(1))
@@ -65,7 +66,7 @@ public class EmployeeControllerTest {
                 "        \"salary\": 99999\n" +
                 "    }"; //copy paste JSON from postman
         //when
-        mockMvc.perform(post("/employees")
+        mockMvc.perform(post(EMPLOYEE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(employee))
                 .andExpect(status().isCreated())
@@ -85,7 +86,7 @@ public class EmployeeControllerTest {
         employeeRepository.create(employee);
 
         //when
-        mockMvc.perform(MockMvcRequestBuilders.get("/employees/{id}", employee.getId()))
+        mockMvc.perform(MockMvcRequestBuilders.get(EMPLOYEE_ENDPOINT+"/{id}", employee.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.name").value("Anna"))
@@ -104,7 +105,7 @@ public class EmployeeControllerTest {
         Employee employeeJohnson = new Employee(2,"Johnson", 20,"F", 99999);
         employeeRepository.create(employeeJohnson);
         //when
-        mockMvc.perform(MockMvcRequestBuilders.get("/employees").param("gender","F"))
+        mockMvc.perform(MockMvcRequestBuilders.get(EMPLOYEE_ENDPOINT).param("gender","F"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(1))
                 .andExpect(jsonPath("$[0].name").value("Anna"))
@@ -136,7 +137,7 @@ public class EmployeeControllerTest {
 
         //when
         //then
-        mockMvc.perform(MockMvcRequestBuilders.get("/employees")
+        mockMvc.perform(MockMvcRequestBuilders.get(EMPLOYEE_ENDPOINT)
                         .param("page","0")
                         .param("pageSize","3"))
                 .andExpect(status().isOk())
@@ -171,7 +172,7 @@ public class EmployeeControllerTest {
                 "        \"salary\": 2021\n" +
                 "    }";
         //when
-        mockMvc.perform(MockMvcRequestBuilders.put("/employees/{id}",employeeAnna.getId())
+        mockMvc.perform(MockMvcRequestBuilders.put(EMPLOYEE_ENDPOINT + "/{id}",employeeAnna.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(updatedEmployee))
                 .andExpect(status().isOk())
@@ -182,5 +183,17 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$.salary").value(2021));
 
 
+    }
+
+    @Test
+    void should_delete_employee_when_perform_delete_given_employee_id() throws Exception {
+        //given
+        Employee employeeAnna = new Employee(1,"Anna", 20,"F", 99999);
+        employeeRepository.create(employeeAnna);
+
+        //when
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.delete(EMPLOYEE_ENDPOINT+"/{id}", employeeAnna.getId()))
+                .andExpect(status().isNoContent());
     }
 }

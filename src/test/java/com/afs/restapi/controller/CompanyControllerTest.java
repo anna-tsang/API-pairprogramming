@@ -28,10 +28,6 @@ public class CompanyControllerTest {
     @Autowired
     CompanyRepository companyRepository;
 
-    //GET "/employees"
-    //prepare data
-    //send request
-    //assertion
     @BeforeEach
     void cleanRepository(){
         companyRepository.clearAll();
@@ -86,5 +82,36 @@ public class CompanyControllerTest {
                 .andExpect((jsonPath("$[0].age").value(20)))
                 .andExpect((jsonPath("$[0].gender").value("M")))
                 .andExpect((jsonPath("$[0].salary").value(20)));
+    }
+
+    @Test
+    void should_return_companies_when_perform_get_given_page_and_pageSize() throws Exception {
+        //given
+        Company company1 = new Company(1, "ABC", null);
+        Company company2 = new Company(2, "ABC2", null);
+        Company company3 = new Company(3, "ABC3", null);
+        Company company4 = new Company(4, "ABC4", null);
+        Company company5 = new Company(5, "ABC5", null);
+
+        companyRepository.create(company1);
+        companyRepository.create(company2);
+        companyRepository.create(company3);
+        companyRepository.create(company4);
+        companyRepository.create(company5);
+
+        Integer page = 0;
+        Integer pageSize = 2;
+
+        //when
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.get(COMPANIES_ENDPOINT)
+                .param("page", String.valueOf(page))
+                .param("pageSize", String.valueOf(pageSize)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].companyName").value("ABC"))
+                .andExpect(jsonPath("$[1].id").value(2))
+                .andExpect(jsonPath("$[1].companyName").value("ABC2"));
+
     }
 }

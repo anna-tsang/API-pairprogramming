@@ -37,6 +37,7 @@ public class CompanyControllerTest {
     @BeforeEach
     void cleanRepository(){
         companyRepository.clearAll();
+        employeeRepository.clearAll();
     }
 
     @Test

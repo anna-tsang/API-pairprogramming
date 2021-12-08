@@ -125,23 +125,21 @@ public class CompanyControllerTest {
 
     }
 
-//    @Test
-//    void should_create_company_when_perform_post_given_company() throws Exception {
-//        // given
-//        String company = "{\n" +
-//                "    \"id\": 1,\n" +
-//                "    \"companyName\": \"ABC Ltd\",\n" +
-//                "    \"employees\"\n" +
-//                "}";
-//        // when
-//        // then
-//        mockMvc.perform(post(COMPANIES_ENDPOINT)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(company))
-//                .andExpect(status().isCreated())
-//                .andExpect(jsonPath("$.id").value(1))
-//                .andExpect(jsonPath("$.companyName").value("ABC Ltd"));
-//    }
+    @Test
+    void should_create_company_when_perform_post_given_company() throws Exception {
+        // given
+        String company = "{\n" +
+                "    \"companyName\": \"Anna Ltd\"\n" +
+                "}";
+        // when
+        // then
+        mockMvc.perform(post(COMPANIES_ENDPOINT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(company))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.companyName").value("Anna Ltd"));
+    }
 
 //    @Test
 //    void should_update_company_when_peform_put_given_companyId_and_updatedCompany() {

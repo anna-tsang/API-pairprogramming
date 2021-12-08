@@ -4,6 +4,7 @@ import com.afs.restapi.entity.Company;
 import com.afs.restapi.entity.Employee;
 import com.afs.restapi.repository.CompanyRepository;
 import com.afs.restapi.repository.EmployeeRepository;
+import com.afs.restapi.service.CompanyService;
 import org.hamcrest.core.IsNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -160,6 +162,21 @@ public class CompanyControllerTest {
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.companyName").value("ABC Ltd"));
     }
+
+    @Test
+    void should_delete_company_when_perform_delete_given_company_id() throws Exception {
+        //given
+        Company company = new Company(1, "ABC Ltd");
+        companyRepository.create(company);
+
+        //when
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.delete(COMPANIES_ENDPOINT +"/{id}", company.getId()))
+                .andExpect(status().isNoContent());
+
+        assertEquals(0, companyRepository.findAll().size());
+    }
+
 
 
 }

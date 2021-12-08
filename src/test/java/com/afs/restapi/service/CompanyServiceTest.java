@@ -74,4 +74,18 @@ public class CompanyServiceTest {
         List<Company> actual = companyService.displayCompany(0, 2);
         assertEquals(companyList, actual);
     }
+
+    @Test
+    void should_return_company_when_create_company_given_company() {
+        // given
+        Company company = new Company(1, "Anna Co");
+
+        given(mockCompanyRepository.create(company))
+                .willReturn(company);
+
+        // when
+        // then
+        Company actual = companyService.create(company);
+        assertEquals(company, actual);
+    }
 }

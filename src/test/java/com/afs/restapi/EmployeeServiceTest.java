@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
@@ -54,6 +55,21 @@ public class EmployeeServiceTest {
         Employee actual = employeeService.edit(employee.getId(), updatedEmployee);
         //then
         verify(mockEmployeeRepository).save(employee.getId(), employee);
+        assertEquals(employee, actual);
+    }
+
+    @Test
+    void should_return_employee_when_perform_get_given_employee_id() {
+        //given
+        Employee employee = new Employee(1, "Anna", 20, "M", 100);
+
+        //when
+        given(mockEmployeeRepository.findById(anyInt()))
+                .willReturn(employee);
+
+        Employee actual = employeeService.findById(employee.getId());
+
+        //then
         assertEquals(employee, actual);
     }
 }

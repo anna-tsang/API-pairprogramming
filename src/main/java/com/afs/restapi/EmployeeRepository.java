@@ -58,7 +58,7 @@ public class EmployeeRepository {
     public Employee delete(Integer id) {
         Employee employee = findById(id);
         employeeList.remove(employee);
-        return null;
+        return employee;
     }
 
     public void clearAll() {

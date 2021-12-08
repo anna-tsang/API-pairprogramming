@@ -138,4 +138,15 @@ public class EmployeeServiceTest {
         Employee actual = employeeService.create(newEmployee);
         assertEquals(employee, actual);
     }
+
+    @Test
+    void should_deleted_employee_when_perform_delete_given_employee_id() {
+        //given
+        Employee employee = new Employee(1 ,"Anna", 20, "M", 100);
+        //when
+        given(mockEmployeeRepository.delete(anyInt()))
+                .willReturn(employee);
+        //then
+        Employee actual = employeeService.delete(employee.getId());
+    }
 }

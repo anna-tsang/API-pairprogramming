@@ -69,4 +69,8 @@ public class CompanyRepository {
         companyList.remove(company);
         return null;
     }
+
+    public void clearAll() {
+        companyList.clear();
+    }
 }

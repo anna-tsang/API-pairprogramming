@@ -9,12 +9,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -113,5 +115,23 @@ public class CompanyControllerTest {
                 .andExpect(jsonPath("$[1].id").value(2))
                 .andExpect(jsonPath("$[1].companyName").value("ABC2"));
 
+    }
+
+    @Test
+    void should_create_company_when_perform_post_given_company() throws Exception {
+        // given
+        String company = "{\n" +
+                "    \"id\": 1,\n" +
+                "    \"companyName\": \"ABC Ltd\",\n" +
+                "    \"employees\": null\n" +
+                "}";
+        // when
+        // then
+        mockMvc.perform(post(COMPANIES_ENDPOINT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(company))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.companyName").value("ABC Ltd"));
     }
 }

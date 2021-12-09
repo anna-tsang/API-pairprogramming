@@ -1,5 +1,9 @@
 package com.afs.restapi.controller;
 
+import com.afs.restapi.Dto.CompanyResponse;
+import com.afs.restapi.Dto.EmployeeResponse;
+import com.afs.restapi.Mapper.CompanyMapper;
+import com.afs.restapi.Mapper.EmployeeMapper;
 import com.afs.restapi.entity.Company;
 import com.afs.restapi.repository.CompanyRepository;
 import com.afs.restapi.entity.Employee;
@@ -19,14 +23,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("companies")
 public class CompanyController {
     public CompanyService companyService;
+    public EmployeeMapper employeeMapper;
+    private CompanyMapper companyMapper;
 
-    public CompanyController(CompanyService companyService){
+    public CompanyController(CompanyService companyService, CompanyMapper companyMapper){
         this.companyService = companyService;
+        this.companyMapper = companyMapper;
     }
 
     @GetMapping
@@ -35,13 +43,14 @@ public class CompanyController {
     }
 
     @GetMapping("/{id}")
-    public Company getCompanyById(@PathVariable String id){
-        return companyService.findByCompanyId(id);
+    public CompanyResponse getCompanyById(@PathVariable String id){
+        List<Employee> employeeList = companyService.getEmployeeListByCompany(id);
+        return companyMapper.toResponse(companyService.findByCompanyId(id),employeeList);
     }
 
     @GetMapping("/{id}/employees")
-    public List<Employee> getEmployeeListByCompany(@PathVariable String id){
-        return companyService.getEmployeeListByCompany(id);
+    public List<EmployeeResponse> getEmployeeListByCompany(@PathVariable String id){
+        return companyService.getEmployeeListByCompany(id).stream().map(employee -> employeeMapper.toResponse(employee)).collect(Collectors.toList());
     }
 
     @GetMapping(params = {"page","pageSize"})
@@ -57,11 +66,7 @@ public class CompanyController {
 
     @PutMapping("/{id}")
     public Company editCompany(@PathVariable String id, @RequestBody Company updatedCompany){
-        Company company = companyService.findByCompanyId(id);
-        if(updatedCompany.getCompanyName() != null){
-            company.setCompanyName(updatedCompany.getCompanyName());
-        }
-        return companyService.edit(id,company);
+        return companyService.edit(id,updatedCompany);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)

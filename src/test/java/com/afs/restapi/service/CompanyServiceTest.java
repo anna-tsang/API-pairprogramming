@@ -3,13 +3,9 @@ package com.afs.restapi.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import com.afs.restapi.entity.Company;
 import com.afs.restapi.entity.Employee;
-import com.afs.restapi.repository.CompanyRepository;
 import com.afs.restapi.repository.CompanyRepositoryNew;
-import com.afs.restapi.repository.EmployeeRepository;
 import com.afs.restapi.repository.EmployeeRepositoryNew;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.verify;
@@ -29,9 +24,7 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(SpringExtension.class)
 public class CompanyServiceTest {
     @Mock
-    CompanyRepository companyRepository;
-    @Mock
-    EmployeeRepository employeeRepository;
+    EmployeeRepositoryNew employeeRepositoryNew;
     @Mock
     CompanyRepositoryNew companyRepositoryNew;
     @InjectMocks
@@ -41,7 +34,7 @@ public class CompanyServiceTest {
     void should_return_companies_when_get_companies_given_companies_and_employees() {
         // given
         List<Employee> employees = Arrays.asList(new Employee("1", "Anna", 20, "F", 99999, "1")) ;
-        given(employeeRepository.findByCompanyId(any()))
+        given(employeeRepositoryNew.findByCompanyId(any()))
                 .willReturn(employees);
 
         List<Company> companies = Arrays.asList(new Company("1", "ABC Ltd")) ;
@@ -137,9 +130,8 @@ public class CompanyServiceTest {
 
         //then
         companyService.deleteCompany(company.getId());
-//        Company actual = companyService.deleteCompany(company.getId());
+
         verify(companyRepositoryNew).deleteById(company.getId());
-//        assertEquals(company, actual);
     }
 
 }

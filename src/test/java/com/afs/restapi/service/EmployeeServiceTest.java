@@ -97,7 +97,7 @@ public class EmployeeServiceTest {
         //then
         assertEquals(employeeMale, actual);
     }
-//
+
 //    @Test
 //    void should_return_employees_when_perform_get_given_page_and_pageSize() {
 //        //given
@@ -130,30 +130,30 @@ public class EmployeeServiceTest {
 //
 //        assertEquals(firstPageWith2Employees, actual);
 //    }
-//
-//    @Test
-//    void should_return_employee_when_perform_post_given_new_employee() {
-//        //given
-//        Employee employee = new Employee("1" ,"Anna", 20, "M", 100, "1");
-//
-//        //when
-//        given(mockEmployeeRepository.create(any()))
-//                .willReturn(employee);
-//
-//        //then
-//        Employee newEmployee = new Employee(null ,"Anna", 20, "M", 100, "1");
-//        Employee actual = employeeService.create(newEmployee);
-//        assertEquals(employee, actual);
-//    }
-//
-//    @Test
-//    void should_deleted_employee_when_perform_delete_given_employee_id() {
-//        //given
-//        Employee employee = new Employee("1" ,"Anna", 20, "M", 100, "1");
-//        //when
-//        given(mockEmployeeRepository.delete(any()))
-//                .willReturn(employee);
-//        //then
-//        employeeService.delete(employee.getId());
-//    }
+
+    @Test
+    void should_return_employee_when_perform_post_given_new_employee() {
+        //given
+        Employee employee = new Employee("1" ,"Anna", 20, "M", 100, "1");
+
+        //when
+        given(mockEmployeeRepositoryNew.insert(employee))
+                .willReturn(employee);
+
+        //then
+        Employee actual = employeeService.create(employee);
+        assertEquals(employee, actual);
+    }
+
+    @Test
+    void should_deleted_employee_when_perform_delete_given_employee_id() {
+        //given
+        Employee employee = new Employee("1" ,"Anna", 20, "M", 100, "1");
+        //when
+        given(mockEmployeeRepositoryNew.findById(any()))
+                .willReturn(java.util.Optional.of(employee));
+        //then
+        employeeService.delete(employee.getId());
+        verify(mockEmployeeRepositoryNew).delete(employee);
+    }
 }

@@ -66,6 +66,6 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void deleteEmployee(@PathVariable String id){
-        Employee employee = employeeService.findById(id);
+        employeeService.delete(id);
     }
 }

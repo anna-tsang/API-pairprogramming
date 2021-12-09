@@ -53,7 +53,8 @@ public class EmployeeService {
         employeeRepositoryNew.delete(findById(id));
     }
 
-    public List<Employee> findEmployeeByCompanyId(String companyId){
-        return employeeRepository.findEmployeeByCompanyId(companyId);
-    }
+//    public List<Employee> findEmployeeByCompanyId(String companyId){
+//        return employeeRepositoryNew.findEmployeeByCompanyId(companyId);
+//    }
+
 }

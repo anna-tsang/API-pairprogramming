@@ -1,5 +1,6 @@
 package com.afs.restapi.controller;
 
+import com.afs.restapi.Dto.CompanyRequest;
 import com.afs.restapi.Dto.CompanyResponse;
 import com.afs.restapi.Dto.EmployeeResponse;
 import com.afs.restapi.Mapper.CompanyMapper;
@@ -32,9 +33,10 @@ public class CompanyController {
     public EmployeeMapper employeeMapper;
     private CompanyMapper companyMapper;
 
-    public CompanyController(CompanyService companyService, CompanyMapper companyMapper){
+    public CompanyController(CompanyService companyService, CompanyMapper companyMapper, EmployeeMapper employeeMapper){
         this.companyService = companyService;
         this.companyMapper = companyMapper;
+        this.employeeMapper = employeeMapper;
     }
 
     @GetMapping
@@ -45,12 +47,14 @@ public class CompanyController {
     @GetMapping("/{id}")
     public CompanyResponse getCompanyById(@PathVariable String id){
         List<Employee> employeeList = companyService.getEmployeeListByCompany(id);
-        return companyMapper.toResponse(companyService.findByCompanyId(id),employeeList);
+        return companyMapper.toResponse(companyService.findByCompanyId(id), companyService.getEmployeeListByCompany(id));
     }
 
     @GetMapping("/{id}/employees")
     public List<EmployeeResponse> getEmployeeListByCompany(@PathVariable String id){
-        return companyService.getEmployeeListByCompany(id).stream().map(employee -> employeeMapper.toResponse(employee)).collect(Collectors.toList());
+        return companyService.getEmployeeListByCompany(id).stream()
+                .map(employee -> employeeMapper.toResponse(employee))
+                .collect(Collectors.toList());
     }
 
     @GetMapping(params = {"page","pageSize"})
@@ -60,19 +64,23 @@ public class CompanyController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Company createCompany(@RequestBody Company company){
-        return companyService.create(company);
+    public Company createCompany(@RequestBody CompanyRequest companyRequest){
+        return companyService.create(companyMapper.toEntity(companyRequest));
     }
 
     @PutMapping("/{id}")
     public Company editCompany(@PathVariable String id, @RequestBody Company updatedCompany){
-        return companyService.edit(id,updatedCompany);
+        Company company = companyService.findByCompanyId(id);
+        if(updatedCompany.getCompanyName() != null){
+            company.setCompanyName(updatedCompany.getCompanyName());
+        }
+        return companyService.edit(id,company);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public Company deleteCompany(@PathVariable String id){
+    public void deleteCompany(@PathVariable String id){
         Company company = companyService.findByCompanyId(id);
-        return companyService.delete(id);
+        companyService.delete(id);
     }
 }

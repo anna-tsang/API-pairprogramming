@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface CompanyRepositoryNew extends MongoRepository<Company, String> {
-    List<Employee> findAllByCompanyId(String companyId);
+//    List<Employee> findAllByCompanyId(String companyId);
 }

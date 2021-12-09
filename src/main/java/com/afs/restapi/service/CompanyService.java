@@ -5,6 +5,7 @@ import com.afs.restapi.entity.Employee;
 import com.afs.restapi.exception.NoMatchIdFoundException;
 import com.afs.restapi.repository.CompanyRepository;
 import com.afs.restapi.repository.CompanyRepositoryNew;
+import com.afs.restapi.repository.EmployeeRepositoryNew;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.List;
 public class CompanyService {
     private CompanyRepository companyRepository;
     private CompanyRepositoryNew companyRepositoryNew;
+    private EmployeeRepositoryNew employeeRepositoryNew;
 
     public CompanyService(CompanyRepository companyRepository, CompanyRepositoryNew companyRepositoryNew){
         this.companyRepository = companyRepository;
@@ -52,6 +54,10 @@ public class CompanyService {
     }
 
     public List<Employee> getEmployeeListByCompany(String companyId){
-        return companyRepositoryNew.findAllByCompanyId(companyId);
+        List<Employee> employeeList = employeeRepositoryNew.findAllByCompanyId(companyId);
+        if(employeeList == null){
+            return null;
+        }
+        return employeeList;
     }
 }

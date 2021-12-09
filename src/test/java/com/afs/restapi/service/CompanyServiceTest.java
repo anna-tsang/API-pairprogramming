@@ -5,6 +5,7 @@ import com.afs.restapi.entity.Employee;
 import com.afs.restapi.repository.CompanyRepository;
 import com.afs.restapi.repository.CompanyRepositoryNew;
 import com.afs.restapi.repository.EmployeeRepository;
+import com.afs.restapi.repository.EmployeeRepositoryNew;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -34,6 +37,9 @@ public class CompanyServiceTest {
 
     @Mock
     CompanyRepositoryNew mockCompanyRepositoryNew;
+
+    @Mock
+    EmployeeRepositoryNew mockEmployeeRepositoryNew;
 
     @Test
     void should_return_all_company_when_perform_get_given_company() {
@@ -67,17 +73,17 @@ public class CompanyServiceTest {
     @Test
     void should_return_employee_list_when_perform_put_given_company_id() {
         //given
-        Company company1 = new Company("1", "Anna Ltd");
-        Company company2 = new Company("2", "Bnna Ltd");
-        List<Employee> employeeList = mockCompanyRepositoryNew.findAllByCompanyId("1");
+        List<Employee> employees = Stream.of(new Employee("1","Anna",3,"female",2,"1"))
+                .collect(Collectors.toList());
+        Company company = new Company("1","company");
+        given(mockEmployeeRepositoryNew.findAllByCompanyId("1"))
+                .willReturn(employees);
 
-        given(mockCompanyRepositoryNew.findAllByCompanyId(any()))
-                .willReturn(employeeList);
         //when
 
         //then
         List<Employee> actual = companyService.getEmployeeListByCompany("1");
-        assertEquals(employeeList, actual);
+        assertEquals(employees, actual);
     }
 
 

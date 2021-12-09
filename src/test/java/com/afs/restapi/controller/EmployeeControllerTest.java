@@ -28,19 +28,12 @@ public class EmployeeControllerTest {
     MockMvc mockMvc;
 
     @Autowired
-    EmployeeRepository employeeRepository;
-
-    @Autowired
     EmployeeRepositoryNew mockEmployeeRepositoryNew;
 
     @BeforeEach
     void cleanRepositoryBefore(){
         mockEmployeeRepositoryNew.deleteAll();;
     }
-//    @AfterEach
-//    void cleanRepositoryAfter(){
-//        mockEmployeeRepositoryNew.deleteAll();;
-//    }
 
     @Test
     void should_get_all_employees_when_perform_get_given_employees() throws Exception {

@@ -3,7 +3,9 @@ package com.afs.restapi.controller;
 import com.afs.restapi.entity.Company;
 import com.afs.restapi.entity.Employee;
 import com.afs.restapi.repository.CompanyRepository;
+import com.afs.restapi.repository.CompanyRepositoryNew;
 import com.afs.restapi.repository.EmployeeRepository;
+import com.afs.restapi.repository.EmployeeRepositoryNew;
 import com.afs.restapi.service.CompanyService;
 import org.hamcrest.core.IsNull;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,17 +38,25 @@ public class CompanyControllerTest {
     @Autowired
     EmployeeRepository employeeRepository;
 
+    @Autowired
+    CompanyRepositoryNew companyRepositoryNew;
+
+    @Autowired
+    EmployeeRepositoryNew employeeRepositoryNew;
+
     @BeforeEach
     void cleanRepository(){
-        companyRepository.clearAll();
-        employeeRepository.clearAll();
+//        companyRepository.clearAll();
+//        employeeRepository.clearAll();
+        companyRepositoryNew.deleteAll();
+        employeeRepositoryNew.deleteAll();
     }
 
     @Test
     void should_return_company_list_when_perform_get_given_companies() throws Exception {
         //given
         Company company = new Company("1", "Anna Ltd");
-        companyRepository.create(company);
+        companyRepositoryNew.insert(company);
         //when
         //then
         mockMvc.perform(MockMvcRequestBuilders.get(COMPANIES_ENDPOINT))

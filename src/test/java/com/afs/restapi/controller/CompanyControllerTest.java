@@ -151,15 +151,15 @@ public class CompanyControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.companyName").value("Bnnb Ltd"));
     }
-//
-//    @Test
-//    void should_delete_company_when_perform_delete_given_company_id() throws Exception {
-//        //given
-//        Company company = new Company("1", "Anna Ltd");
-//        companyRepository.create(company);
-//        //when
-//        //then
-//        mockMvc.perform(MockMvcRequestBuilders.delete(COMPANIES_ENDPOINT+"/{id}", company.getId()))
-//                .andExpect(status().isNoContent());
-//    }
+
+    @Test
+    void should_delete_company_when_perform_delete_given_company_id() throws Exception {
+        //given
+        Company company = new Company( "Anna Ltd");
+        companyRepositoryNew.insert(company);
+        //when
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.delete(COMPANIES_ENDPOINT+"/{id}", company.getId()))
+                .andExpect(status().isNoContent());
+    }
 }

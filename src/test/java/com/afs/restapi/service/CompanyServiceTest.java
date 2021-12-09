@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,8 @@ public class CompanyServiceTest {
     @InjectMocks
     CompanyService companyService;
 
+    EmployeeRepository employeeRepository;
+
     @Test
     void should_return_all_company_when_perform_get_given_company() {
         //given
@@ -46,7 +49,7 @@ public class CompanyServiceTest {
     void should_return_company_when_perform_get_given_company_id() {
         //given
         Company company1 = new Company(1, "Anna Ltd");
-        Company company2 = new Company(2, "Anna Ltd");
+        Company company2 = new Company(2, "Bnna Ltd");
         List<Company> companyList = new ArrayList<>();
         companyList.add(company1);
         companyList.add(company2);
@@ -56,6 +59,22 @@ public class CompanyServiceTest {
         Company actual = companyService.findByCompanyId(1);
         //then
         assertEquals(company1, actual);
+    }
+
+    @Test
+    void should_return_employee_list_when_perform_put_given_company_id() {
+        //given
+        Company company1 = new Company(1, "Anna Ltd");
+        Company company2 = new Company(2, "Bnna Ltd");
+        List<Employee> employeeList = mockCompanyRepository.getEmployeeListByCompany(1);
+
+        given(mockCompanyRepository.getEmployeeListByCompany(any()))
+                .willReturn(employeeList);
+        //when
+
+        //then
+        List<Employee> actual = companyService.getEmployeeListByCompany(1);
+        assertEquals(employeeList, actual);
     }
 
 

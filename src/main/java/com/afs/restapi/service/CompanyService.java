@@ -2,8 +2,10 @@ package com.afs.restapi.service;
 
 import com.afs.restapi.entity.Company;
 import com.afs.restapi.entity.Employee;
+import com.afs.restapi.exception.NoMatchIdFoundException;
 import com.afs.restapi.repository.CompanyRepository;
-import com.afs.restapi.repository.EmployeeRepository;
+import com.afs.restapi.repository.CompanyRepositoryNew;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,45 +13,45 @@ import java.util.List;
 @Service
 public class CompanyService {
     private CompanyRepository companyRepository;
-    private EmployeeService employeeService;
+    private CompanyRepositoryNew companyRepositoryNew;
 
-    public CompanyService(CompanyRepository companyRepository){
+    public CompanyService(CompanyRepository companyRepository, CompanyRepositoryNew companyRepositoryNew){
         this.companyRepository = companyRepository;
+        this.companyRepositoryNew = companyRepositoryNew;
     }
 
     public List<Company> findAllCompanies() {
-        return companyRepository.findAll();
+        return companyRepositoryNew.findAll();
     }
 
     public Company edit(String id, Company updatedCompany) {
-        Company company = companyRepository.findById(id);
+        Company company = findByCompanyId(id);
         if(updatedCompany.getCompanyName() != null){
             company.setCompanyName(updatedCompany.getCompanyName());
         }
         if (updatedCompany.getEmployees() != null){
             company.setEmployees(updatedCompany.getEmployees());
         }
-        return companyRepository.save(id,company);
+        return companyRepositoryNew.save(company);
     }
 
     public Company findByCompanyId(String id) {
-        return companyRepository.findById(id);
+        return companyRepositoryNew.findById(id).orElseThrow(NoMatchIdFoundException::new);
     }
 
     public List<Company> displayCompany(Integer page, Integer pageSize) {
-        return companyRepository.displayCompany(page,pageSize);
+        return companyRepositoryNew.findAll(PageRequest.of(page, pageSize)).getContent();
     }
 
     public Company create(Company newCompany) {
-        return companyRepository.create(newCompany);
+        return companyRepositoryNew.insert(newCompany);
     }
 
-    public Company delete(String id) {
-        return companyRepository.delete(id);
+    public void delete(String id) {
+        companyRepositoryNew.delete(findByCompanyId(id));
     }
 
     public List<Employee> getEmployeeListByCompany(String companyId){
-
-        return companyRepository.getEmployeeListByCompany(companyId);
+        return companyRepositoryNew.findAllByCompanyId(companyId);
     }
 }

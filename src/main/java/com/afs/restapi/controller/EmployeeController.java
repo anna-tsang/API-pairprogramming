@@ -34,7 +34,9 @@ public class EmployeeController {
 
     @GetMapping
     public List<EmployeeResponse> getEmployee(){
-        return employeeService.findAll().stream().map(employee -> employeeMapper.toResponse(employee)).collect(Collectors.toList());
+        return employeeService.findAll().stream()
+                .map(employee -> employeeMapper.toResponse(employee))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
@@ -44,23 +46,27 @@ public class EmployeeController {
 
     @GetMapping(params = {"gender"})
     public List<EmployeeResponse> getEmployeesByGender(@RequestParam String gender){
-        return employeeService.findByGender(gender).stream().map(employee -> employeeMapper.toResponse(employee)).collect(Collectors.toList());
+        return employeeService.findByGender(gender).stream()
+                .map(employee -> employeeMapper.toResponse(employee))
+                .collect(Collectors.toList());
     }
 
     @GetMapping(params = {"page","pageSize"})
     public List<EmployeeResponse> displayEmployee(@RequestParam Integer page, @RequestParam Integer pageSize){
-        return employeeService.displayEmployee(page,pageSize).stream().map(employee -> employeeMapper.toResponse(employee)).collect(Collectors.toList());
+        return employeeService.displayEmployee(page, pageSize).stream()
+                .map(employee -> employeeMapper.toResponse(employee))
+                .collect(Collectors.toList());
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Employee createEmployee(@RequestBody EmployeeRequest employeeRequest){
-        return employeeService.create(employeeMapper.toEntity(employeeRequest));
+    public EmployeeResponse  createEmployee(@RequestBody EmployeeRequest employeeRequest){
+        return employeeMapper.toResponse(employeeService.create(employeeMapper.toEntity(employeeRequest)));
     }
 
     @PutMapping("/{id}")
-    public Employee editEmployee(@PathVariable String id, @RequestBody EmployeeRequest updatedEmployeeRequest){
-        return employeeService.edit(id,employeeMapper.toEntity(updatedEmployeeRequest));
+    public EmployeeResponse editEmployee(@PathVariable String id, @RequestBody EmployeeRequest updatedEmployeeRequest){
+        return employeeMapper.toResponse(employeeService.edit(id,employeeMapper.toEntity(updatedEmployeeRequest)));
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)

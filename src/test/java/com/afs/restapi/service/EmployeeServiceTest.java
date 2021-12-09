@@ -1,7 +1,6 @@
 package com.afs.restapi.service;
 
 import com.afs.restapi.entity.Employee;
-import com.afs.restapi.repository.EmployeeRepository;
 import com.afs.restapi.repository.EmployeeRepositoryNew;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,15 +17,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
 public class EmployeeServiceTest {
-    @Mock
-    EmployeeRepository mockEmployeeRepository;
 
     @Mock
     EmployeeRepositoryNew mockEmployeeRepositoryNew;

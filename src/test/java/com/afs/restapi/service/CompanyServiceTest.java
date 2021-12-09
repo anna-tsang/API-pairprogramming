@@ -16,7 +16,7 @@ import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(SpringExtension.class)
@@ -31,11 +31,11 @@ public class CompanyServiceTest {
     @Test
     void should_return_companies_when_get_companies_given_companies_and_employees() {
         // given
-        List<Employee> employees = Arrays.asList(new Employee(1, "Anna", 20, "F", 99999, 1)) ;
-        given(employeeRepository.findByCompanyId(anyInt()))
+        List<Employee> employees = Arrays.asList(new Employee("1", "Anna", 20, "F", 99999, "1")) ;
+        given(employeeRepository.findByCompanyId(any()))
                 .willReturn(employees);
 
-        List<Company> companies = Arrays.asList(new Company(1, "ABC Ltd")) ;
+        List<Company> companies = Arrays.asList(new Company("1", "ABC Ltd")) ;
 
         companies.forEach(company -> company.setEmployees(employees));
 
@@ -52,9 +52,9 @@ public class CompanyServiceTest {
     @Test
     void should_return_company_when_get_company_given_company_id() {
         // given
-        Company company = new Company(1, "ABC");
+        Company company = new Company("1", "ABC");
 
-        given(companyRepository.findById(anyInt()))
+        given(companyRepository.findById(any()))
                 .willReturn(company);
 
         // when
@@ -69,10 +69,10 @@ public class CompanyServiceTest {
         // given
         List<Company> companies = new ArrayList<>();
 
-        companies.add(new Company(1, "ABC"));
-        companies.add(new Company(2, "DEF"));
+        companies.add(new Company("1", "ABC"));
+        companies.add(new Company("2", "DEF"));
 
-        given(companyRepository.displayCompany(anyInt(), anyInt()))
+        given(companyRepository.displayCompany(any(), any()))
                 .willReturn(companies);
 
         // when
@@ -84,7 +84,7 @@ public class CompanyServiceTest {
     @Test
     void should_return_company_when_create_company_given_company() {
         // given
-        Company company = new Company(1, "Abc");
+        Company company = new Company("1", "Abc");
 
         given(companyRepository.create(company))
                 .willReturn(company);
@@ -98,27 +98,27 @@ public class CompanyServiceTest {
     @Test
     void should_return_company_when_edit_company_given_company_id_and_updated_company() {
         // given
-        Company company = new Company(1, "Def");
-        Company updatedCompany = new Company(1, "Cde");
+        Company company = new Company("1", "Def");
+        Company updatedCompany = new Company("1", "Cde");
 
         // when
-        given(companyRepository.findById(anyInt()))
+        given(companyRepository.findById(any()))
                 .willReturn(company);
 
-        given(companyRepository.save(anyInt(), any(Company.class)))
+        given(companyRepository.save(any(), any(Company.class)))
                 .willReturn(updatedCompany);
 
         // then
-        Company actual = companyService.editCompany(1, updatedCompany);
+        Company actual = companyService.editCompany("1", updatedCompany);
         assertEquals(updatedCompany, actual);
     }
 
     @Test
     void should_return_company_when_delete_company_given_company_id() {
         //given
-        Company company = new Company(1, "ABC");
+        Company company = new Company("1", "ABC");
         //when
-        given(companyRepository.delete(anyInt()))
+        given(companyRepository.delete(any()))
                 .willReturn(company);
         //then
         Company actual = companyService.deleteCompany(company.getId());

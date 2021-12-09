@@ -15,7 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -30,7 +30,7 @@ public class EmployeeServiceTest {
     @Test
     void should_return_all_employees_when_find_all_given_employees() {
         //given
-        List<Employee> employees = Arrays.asList(new Employee(1, "Anna", 20, "F", 99999, 1)) ;
+        List<Employee> employees = Arrays.asList(new Employee("1", "Anna", 20, "F", 99999, "1"));
         given(mockEmployeeRepository.findAll())
                 .willReturn(employees);
         //when
@@ -43,10 +43,10 @@ public class EmployeeServiceTest {
     @Test
     void should_return_updated_employee_when_edit_employee_given_updated_employee() {
         //given
-        Employee employee = new Employee(1,"Anna", 20, "F", 9999, 1);
-        Employee updatedEmployee = new Employee(1,"Anna", 99, "F", 9999, 1);
+        Employee employee = new Employee("1","Anna", 20, "F", 9999, "1");
+        Employee updatedEmployee = new Employee("1","Anna", 99, "F", 9999, "1");
 
-        given(mockEmployeeRepository.findById(anyInt()))
+        given(mockEmployeeRepository.findById(any()))
                 .willReturn(employee);
 
         employee.setAge(updatedEmployee.getAge());
@@ -65,10 +65,10 @@ public class EmployeeServiceTest {
     @Test
     void should_return_employee_when_perform_get_given_employee_id() {
         //given
-        Employee employee = new Employee(1, "Anna", 20, "M", 100, 1);
+        Employee employee = new Employee("1", "Anna", 20, "M", 100, "1");
 
         //when
-        given(mockEmployeeRepository.findById(anyInt()))
+        given(mockEmployeeRepository.findById(any()))
                 .willReturn(employee);
 
         Employee actual = employeeService.findById(employee.getId());
@@ -80,8 +80,8 @@ public class EmployeeServiceTest {
     @Test
     void should_return_employees_when_perform_get_given_employee_gender() {
         //given
-        Employee employeeA = new Employee(1, "Anna", 20, "M", 100, 1);
-        Employee employeeB = new Employee(2, "Johnson", 20, "F", 10, 1);
+        Employee employeeA = new Employee("1", "Anna", 20, "M", 100, "1");
+        Employee employeeB = new Employee("2", "Johnson", 20, "F", 10, "1");
         List<Employee> employees = new ArrayList<>();
         employees.add(employeeA);
         employees.add(employeeB);
@@ -99,15 +99,15 @@ public class EmployeeServiceTest {
         //given
         List<Employee> employees = new ArrayList<>();
 
-        Employee employee = new Employee (1,"Anna",20,"F",5000, 1);
-        Employee employee2 = new Employee (2,"Johnson",20,"M",4000, 1);
+        Employee employee = new Employee ("1","Anna",20,"F",5000, "1");
+        Employee employee2 = new Employee ("2","Johnson",20,"M",4000, "1");
 
-        employees.add(new Employee (1,"Anna",20,"F",5000, 1));
-        employees.add(new Employee (2,"Johnson",20,"M",4000, 1));
-        employees.add(new Employee (3,"Apple",20,"F",4000, 1));
-        employees.add(new Employee (4,"April",20,"M",4000, 1));
-        employees.add(new Employee (5,"May",20,"M",4000, 1));
-        employees.add(new Employee (6,"June",20,"M",4000, 1));
+        employees.add(new Employee ("1","Anna",20,"F",5000, "1"));
+        employees.add(new Employee ("2","Johnson",20,"M",4000, "1"));
+        employees.add(new Employee ("3","Apple",20,"F",4000, "1"));
+        employees.add(new Employee ("4","April",20,"M",4000, "1"));
+        employees.add(new Employee ("5","May",20,"M",4000, "1"));
+        employees.add(new Employee ("6","June",20,"M",4000, "1"));
 
         List<Employee> firstPageWith2Employees = new ArrayList<>();
 
@@ -130,14 +130,14 @@ public class EmployeeServiceTest {
     @Test
     void should_return_employee_when_perform_post_given_new_employee() {
         //given
-        Employee employee = new Employee(1 ,"Anna", 20, "M", 100, 1);
+        Employee employee = new Employee("1" ,"Anna", 20, "M", 100, "1");
 
         //when
         given(mockEmployeeRepository.create(any()))
                 .willReturn(employee);
 
         //then
-        Employee newEmployee = new Employee(null ,"Anna", 20, "M", 100, 1);
+        Employee newEmployee = new Employee(null ,"Anna", 20, "M", 100, "1");
         Employee actual = employeeService.create(newEmployee);
         assertEquals(employee, actual);
     }
@@ -145,9 +145,9 @@ public class EmployeeServiceTest {
     @Test
     void should_deleted_employee_when_perform_delete_given_employee_id() {
         //given
-        Employee employee = new Employee(1 ,"Anna", 20, "M", 100, 1);
+        Employee employee = new Employee("1" ,"Anna", 20, "M", 100, "1");
         //when
-        given(mockEmployeeRepository.delete(anyInt()))
+        given(mockEmployeeRepository.delete(any()))
                 .willReturn(employee);
         //then
         Employee actual = employeeService.delete(employee.getId());
@@ -157,13 +157,13 @@ public class EmployeeServiceTest {
     @Test
     void should_return_employees_when_perform_get_given_company_id() {
         // given
-        Employee employee = new Employee(1,"Anna", 20, "F", 9999, 1);
-        Employee employee2 = new Employee(2,"Anna", 20, "F", 9999, 2);
+        Employee employee = new Employee("1","Anna", 20, "F", 9999, "1");
+        Employee employee2 = new Employee("2","Anna", 20, "F", 9999, "2");
 
         List<Employee> employees = Arrays.asList(employee, employee2);
         List<Employee> employeesWithCompanyId1 = Arrays.asList(employee);
 
-        given(mockEmployeeRepository.findByCompanyId(anyInt()))
+        given(mockEmployeeRepository.findByCompanyId(any()))
                 .willReturn(employeesWithCompanyId1);
 
         // when

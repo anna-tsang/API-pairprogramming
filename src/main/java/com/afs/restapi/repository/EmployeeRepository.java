@@ -15,26 +15,26 @@ public class EmployeeRepository {
     private List<Employee> employeeList = new ArrayList<>();
 
     public EmployeeRepository(){
-        employeeList.add(new Employee (1,"Anna",20,"F",5000, 1));
-        employeeList.add(new Employee (2,"Johnson",20,"M",4000, 1));
-        employeeList.add(new Employee (3,"Apple",20,"F",4000, 1));
-        employeeList.add(new Employee (4,"April",20,"M",4000, 1));
-        employeeList.add(new Employee (5,"May",20,"M",4000, 1));
-        employeeList.add(new Employee (6,"June",20,"M",4000, 1));
+        employeeList.add(new Employee ("1","Anna",20,"F",5000, "1"));
+        employeeList.add(new Employee ("2","Johnson",20,"M",4000, "1"));
+        employeeList.add(new Employee ("3","Apple",20,"F",4000, "1"));
+        employeeList.add(new Employee ("4","April",20,"M",4000, "1"));
+        employeeList.add(new Employee ("5","May",20,"M",4000, "1"));
+        employeeList.add(new Employee ("6","June",20,"M",4000, "1"));
     }
 
     public List<Employee> findAll() {
         return employeeList;
     }
 
-    public Employee findById(int id) {
+    public Employee findById(String id) {
         return employeeList.stream()
                 .filter(employee -> employee.getId().equals(id))
                 .findFirst()
                 .orElseThrow(EmployeeNotFoundException::new);
     }
 
-    public List<Employee> findByCompanyId(Integer companyId) {
+    public List<Employee> findByCompanyId(String companyId) {
         return employeeList.stream()
                 .filter(employee -> employee.getCompanyId().equals(companyId))
                 .collect(Collectors.toList());
@@ -52,20 +52,23 @@ public class EmployeeRepository {
     }
 
     public Employee create(Employee employee) {
-        Integer nextId = employeeList.stream().mapToInt(Employee::getId).max().orElse(0) + 1;
+        String nextId = String.valueOf(employeeList.stream()
+                .mapToInt(existingEmployee -> Integer.valueOf(existingEmployee.getId()))
+                .max()
+                .orElse(0) + 1);
         employee.setId(nextId);
         employeeList.add(employee);
         return employee;
     }
 
-    public Employee save(Integer id, Employee updatedEmployee) {
+    public Employee save(String id, Employee updatedEmployee) {
         Employee employee = findById(id);
         employeeList.remove(employee);
         employeeList.add(updatedEmployee);
         return employee;
     }
 
-    public Employee delete(Integer id) {
+    public Employee delete(String id) {
         Employee employee = findById(id);
         employeeList.remove(employee);
         return employee;

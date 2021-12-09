@@ -3,45 +3,48 @@ package com.afs.restapi.service;
 import java.util.List;
 
 import com.afs.restapi.entity.Company;
+import com.afs.restapi.exception.CompanyNotFoundException;
 import com.afs.restapi.repository.CompanyRepository;
+import com.afs.restapi.repository.CompanyRepositoryNew;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CompanyService {
-    public CompanyRepository companyRepository;
+    public CompanyRepositoryNew companyRepositoryNew;
 
-    public CompanyService(CompanyRepository companyRepository){
-        this.companyRepository = companyRepository;
+    public CompanyService(CompanyRepositoryNew companyRepositoryNew){
+        this.companyRepositoryNew = companyRepositoryNew;
     }
 
     public List<Company> getCompanies(){
-        return companyRepository.findAll();
+        return companyRepositoryNew.findAll();
     }
 
     public Company getCompanyById(String id){
-        return companyRepository.findById(id);
+        return companyRepositoryNew.findById(id).orElseThrow(CompanyNotFoundException::new);
     }
 
     public List<Company> displayCompany(Integer page, Integer pageSize){
-        return companyRepository.displayCompany(page,pageSize);
+        return companyRepositoryNew.findAll(PageRequest.of(page, pageSize)).getContent();
     }
 
     public Company createCompany(Company company){
-        return companyRepository.create(company);
+        return companyRepositoryNew.insert(company);
     }
 
     public Company editCompany(String id, Company updatedCompany){
-        Company company = companyRepository.findById(id);
+        Company company = companyRepositoryNew.findById(id).orElseThrow(CompanyNotFoundException::new);
+
         if(updatedCompany.getCompanyName() != null){
             company.setCompanyName(updatedCompany.getCompanyName());
         }
-//        if(updatedCompany.getEmployees() != null){
-//            company.setEmployees(updatedCompany.getEmployees());
-//        }
-        return companyRepository.save(id,company);
+
+        return companyRepositoryNew.save(company);
     }
 
-    public Company deleteCompany(String id){
-        return companyRepository.delete(id);
+    public void deleteCompany(String id){
+        companyRepositoryNew.deleteById(id);
     }
 }

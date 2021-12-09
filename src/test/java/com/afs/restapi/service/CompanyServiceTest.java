@@ -39,8 +39,6 @@ public class CompanyServiceTest {
 
         List<Company> companies = Arrays.asList(new Company("1", "ABC Ltd")) ;
 
-//        companies.forEach(company -> company.setEmployees(employees));
-
         given(companyRepository.findAll())
                 .willReturn(companies);
 
@@ -48,7 +46,8 @@ public class CompanyServiceTest {
         List<Company> actual = companyService.getCompanies();
 
         // then
-        assertEquals(companies, actual);
+        assertEquals(companies.get(0).getId(), actual.get(0).getId());
+        assertEquals(companies.get(0).getCompanyName(), actual.get(0).getCompanyName());
     }
 
     @Test
@@ -64,6 +63,8 @@ public class CompanyServiceTest {
 
         // then
         assertEquals(company, actual);
+        assertEquals(company.getId(), actual.getId());
+        assertEquals(company.getCompanyName(), actual.getCompanyName());
     }
 
     @Test
@@ -101,6 +102,8 @@ public class CompanyServiceTest {
         // then
         Company actual = companyService.createCompany(company);
         assertEquals(company, actual);
+        assertEquals(company.getId(), actual.getId());
+        assertEquals(company.getCompanyName(), actual.getCompanyName());
     }
 
     @Test
@@ -119,6 +122,8 @@ public class CompanyServiceTest {
         // then
         Company actual = companyService.editCompany("1", updatedCompany);
         assertEquals(updatedCompany, actual);
+        assertEquals(updatedCompany.getId(), actual.getId());
+        assertEquals(updatedCompany.getCompanyName(), actual.getCompanyName());
     }
 
     @Test

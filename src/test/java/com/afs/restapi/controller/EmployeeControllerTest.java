@@ -35,7 +35,7 @@ public class EmployeeControllerTest {
     @Test
     void should_get_all_employees_when_perform_get_given_employees() throws Exception {
         //given
-        Employee employee = new Employee(null,"Anna", 20,"F", 99999, "1");
+        Employee employee = new Employee(null,"Anna", 20,"F", 99999, null);
         employeeRepository.insert(employee);
         //when
         //then

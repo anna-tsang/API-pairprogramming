@@ -1,6 +1,5 @@
 package com.afs.restapi.controller;
 
-import com.afs.restapi.dto.CompanyRequest;
 import com.afs.restapi.dto.CompanyResponse;
 import com.afs.restapi.dto.EmployeeResponse;
 import com.afs.restapi.entity.Company;
@@ -8,7 +7,6 @@ import com.afs.restapi.mapper.CompanyMapper;
 import com.afs.restapi.mapper.EmployeeMapper;
 import com.afs.restapi.service.CompanyService;
 import com.afs.restapi.entity.Employee;
-import com.afs.restapi.repository.EmployeeRepository;
 import com.afs.restapi.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

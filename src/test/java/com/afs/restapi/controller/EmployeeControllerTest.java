@@ -2,9 +2,7 @@ package com.afs.restapi.controller;
 
 import com.afs.restapi.entity.Employee;
 import com.afs.restapi.repository.EmployeeRepository;
-import com.afs.restapi.repository.EmployeeRepositoryNew;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -27,18 +25,18 @@ public class EmployeeControllerTest {
     MockMvc mockMvc;
 
     @Autowired
-    EmployeeRepositoryNew employeeRepositoryNew;
+    EmployeeRepository employeeRepository;
 
     @AfterEach
     void cleanRepository(){
-        employeeRepositoryNew.deleteAll();
+        employeeRepository.deleteAll();
     }
 
     @Test
     void should_get_all_employees_when_perform_get_given_employees() throws Exception {
         //given
         Employee employee = new Employee(null,"Anna", 20,"F", 99999, "1");
-        employeeRepositoryNew.insert(employee);
+        employeeRepository.insert(employee);
         //when
         //then
         mockMvc.perform(MockMvcRequestBuilders.get(EMPLOYEE_ENDPOINT))
@@ -75,7 +73,7 @@ public class EmployeeControllerTest {
     void should_return_employee_when_perform_get_given_employee_id() throws Exception {
         //given
         Employee employee = new Employee(null,"Anna", 20,"F", 99999, "1");
-        employeeRepositoryNew.insert(employee);
+        employeeRepository.insert(employee);
 
         //when
         mockMvc.perform(MockMvcRequestBuilders.get(EMPLOYEE_ENDPOINT+"/{id}", employee.getId()))
@@ -92,9 +90,9 @@ public class EmployeeControllerTest {
     void should_return_employees_when_perform_get_given_employee_gender() throws Exception {
         //given
         Employee employeeAnna = new Employee(null,"Anna", 20,"F", 99999, "1");
-        employeeRepositoryNew.insert(employeeAnna);
+        employeeRepository.insert(employeeAnna);
         Employee employeeJohnson = new Employee(null,"Johnson", 20,"F", 99999, "1");
-        employeeRepositoryNew.insert(employeeJohnson);
+        employeeRepository.insert(employeeJohnson);
         //when
         mockMvc.perform(MockMvcRequestBuilders.get(EMPLOYEE_ENDPOINT).param("gender","F"))
                 .andExpect(status().isOk())
@@ -112,15 +110,15 @@ public class EmployeeControllerTest {
     void should_return_employees_when_perform_get_given_page_and_pageSize() throws Exception {
         //given
         Employee employeeAnna = new Employee(null,"Anna", 20,"M", 20, "1");
-        employeeRepositoryNew.insert(employeeAnna);
+        employeeRepository.insert(employeeAnna);
         Employee employeeJohnson = new Employee(null,"Johnson", 20,"F", 99999, "1");
-        employeeRepositoryNew.insert(employeeJohnson);
+        employeeRepository.insert(employeeJohnson);
         Employee employeeGloria = new Employee(null,"Gloria", 20,"M", 745, "1");
-        employeeRepositoryNew.insert(employeeGloria);
+        employeeRepository.insert(employeeGloria);
         Employee employeeBnna = new Employee(null,"Bnna", 20,"F", 5, "1");
-        employeeRepositoryNew.insert(employeeBnna);
+        employeeRepository.insert(employeeBnna);
         Employee employeeCnna = new Employee(null,"Cnna", 20,"F", 99999, "1");
-        employeeRepositoryNew.insert(employeeCnna);
+        employeeRepository.insert(employeeCnna);
 
         //when
         //then
@@ -147,7 +145,7 @@ public class EmployeeControllerTest {
     void should_return_updated_employee_when_perform_put_given_updated_employee() throws Exception {
         //given
         Employee employeeAnna = new Employee(null,"Anna", 20,"F", 99999, "1");
-        employeeRepositoryNew.insert(employeeAnna);
+        employeeRepository.insert(employeeAnna);
         String updatedEmployee = "{\n" +
                 "    \"name\": \"Anna\",\n" +
                 "    \"age\": 20,\n" +
@@ -170,7 +168,7 @@ public class EmployeeControllerTest {
     void should_delete_employee_when_perform_delete_given_employee_id() throws Exception {
         //given
         Employee employeeAnna = new Employee(null,"Anna", 20,"F", 99999, "1");
-        employeeRepositoryNew.insert(employeeAnna);
+        employeeRepository.insert(employeeAnna);
 
         //when
         //then
@@ -178,6 +176,6 @@ public class EmployeeControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete(EMPLOYEE_ENDPOINT+"/{id}", employeeAnna.getId()))
                 .andExpect(status().isNoContent());
 
-        assertEquals(0, employeeRepositoryNew.findAll().size());
+        assertEquals(0, employeeRepository.findAll().size());
     }
 }

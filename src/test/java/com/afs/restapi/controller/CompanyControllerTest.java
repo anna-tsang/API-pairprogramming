@@ -3,13 +3,8 @@ package com.afs.restapi.controller;
 import com.afs.restapi.entity.Company;
 import com.afs.restapi.entity.Employee;
 import com.afs.restapi.repository.CompanyRepository;
-import com.afs.restapi.repository.CompanyRepositoryNew;
 import com.afs.restapi.repository.EmployeeRepository;
-import com.afs.restapi.repository.EmployeeRepositoryNew;
-import com.afs.restapi.service.CompanyService;
-import org.hamcrest.core.IsNull;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,9 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -39,23 +31,17 @@ public class CompanyControllerTest {
     @Autowired
     EmployeeRepository employeeRepository;
 
-    @Autowired
-    CompanyRepositoryNew companyRepositoryNew;
-
-    @Autowired
-    EmployeeRepositoryNew employeeRepositoryNew;
-
     @AfterEach
     void cleanRepository(){
-        companyRepositoryNew.deleteAll();
-        employeeRepositoryNew.deleteAll();
+        companyRepository.deleteAll();
+        employeeRepository.deleteAll();
     }
 
     @Test
     void should_return_company_list_when_perform_get_given_companies() throws Exception {
         //given
         Company company = new Company(null, "Anna Ltd");
-        companyRepositoryNew.insert(company);
+        companyRepository.insert(company);
         //when
         //then
         mockMvc.perform(MockMvcRequestBuilders.get(COMPANIES_ENDPOINT))
@@ -68,9 +54,9 @@ public class CompanyControllerTest {
     void should_return_company_when_perform_get_given_company_id() throws Exception {
         //given
         Company company = new Company(null, "Anna Ltd");
-        companyRepositoryNew.insert(company);
+        companyRepository.insert(company);
         Company company2 = new Company(null, "Anna Company");
-        companyRepositoryNew.insert(company2);
+        companyRepository.insert(company2);
 
         //when
         //then
@@ -84,15 +70,15 @@ public class CompanyControllerTest {
     void should_return_employee_list_when_perform_get_given_company_id() throws Exception {
         //given
         Company company = new Company(null, "Anna Ltd");
-        companyRepositoryNew.insert(company);
+        companyRepository.insert(company);
         Company company2 = new Company(null, "Anna Company");
-        companyRepositoryNew.insert(company2);
+        companyRepository.insert(company2);
 
 
         Employee employeeAnna = new Employee(null,"Anna", 20,"M", 20, company.getId());
-        employeeRepositoryNew.insert(employeeAnna);
+        employeeRepository.insert(employeeAnna);
         Employee employeeJohnson = new Employee(null,"Johnson", 20,"F", 99999, company.getId());
-        employeeRepositoryNew.insert(employeeJohnson);
+        employeeRepository.insert(employeeJohnson);
 
         //when
         //then
@@ -113,11 +99,11 @@ public class CompanyControllerTest {
         Company company4 = new Company("4", "ABC4");
         Company company5 = new Company("5", "ABC5");
 
-        companyRepositoryNew.insert(company1);
-        companyRepositoryNew.insert(company2);
-        companyRepositoryNew.insert(company3);
-        companyRepositoryNew.insert(company4);
-        companyRepositoryNew.insert(company5);
+        companyRepository.insert(company1);
+        companyRepository.insert(company2);
+        companyRepository.insert(company3);
+        companyRepository.insert(company4);
+        companyRepository.insert(company5);
 
         Integer page = 0;
         Integer pageSize = 2;
@@ -156,7 +142,7 @@ public class CompanyControllerTest {
         //given
         Company company = new Company(null, "Anna Ltd");
 
-        companyRepositoryNew.insert(company);
+        companyRepository.insert(company);
 
         String updatedCompany = "{\n" +
                 "    \"id\": \"" + company.getId() + "\",\n" +
@@ -176,15 +162,15 @@ public class CompanyControllerTest {
     void should_delete_company_when_perform_delete_given_company_id() throws Exception {
         //given
         Company company = new Company(null, "ABC Ltd");
-        companyRepositoryNew.insert(company);
+        companyRepository.insert(company);
 
-        int size = companyRepositoryNew.findAll().size();
+        int size = companyRepository.findAll().size();
 
         //when
         //then
         mockMvc.perform(MockMvcRequestBuilders.delete(COMPANIES_ENDPOINT +"/{id}", company.getId()))
                 .andExpect(status().isNoContent());
 
-        assertEquals(--size, companyRepositoryNew.findAll().size());
+        assertEquals(--size, companyRepository.findAll().size());
     }
 }

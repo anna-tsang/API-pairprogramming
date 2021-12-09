@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import com.afs.restapi.entity.Company;
 import com.afs.restapi.entity.Employee;
-import com.afs.restapi.repository.CompanyRepositoryNew;
-import com.afs.restapi.repository.EmployeeRepositoryNew;
+import com.afs.restapi.repository.CompanyRepository;
+import com.afs.restapi.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,9 +24,9 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(SpringExtension.class)
 public class CompanyServiceTest {
     @Mock
-    EmployeeRepositoryNew employeeRepositoryNew;
+    EmployeeRepository employeeRepository;
     @Mock
-    CompanyRepositoryNew companyRepositoryNew;
+    CompanyRepository companyRepository;
     @InjectMocks
     CompanyService companyService;
 
@@ -34,14 +34,14 @@ public class CompanyServiceTest {
     void should_return_companies_when_get_companies_given_companies_and_employees() {
         // given
         List<Employee> employees = Arrays.asList(new Employee("1", "Anna", 20, "F", 99999, "1")) ;
-        given(employeeRepositoryNew.findByCompanyId(any()))
+        given(employeeRepository.findByCompanyId(any()))
                 .willReturn(employees);
 
         List<Company> companies = Arrays.asList(new Company("1", "ABC Ltd")) ;
 
 //        companies.forEach(company -> company.setEmployees(employees));
 
-        given(companyRepositoryNew.findAll())
+        given(companyRepository.findAll())
                 .willReturn(companies);
 
         // when
@@ -56,7 +56,7 @@ public class CompanyServiceTest {
         // given
         Company company = new Company("1", "ABC");
 
-        given(companyRepositoryNew.findById(any()))
+        given(companyRepository.findById(any()))
                 .willReturn(java.util.Optional.of(company));
 
         // when
@@ -78,7 +78,7 @@ public class CompanyServiceTest {
         Integer pageSize = 2;
 
         //when
-        given(companyRepositoryNew.findAll((Pageable) any()))
+        given(companyRepository.findAll((Pageable) any()))
                 .willReturn(new PageImpl<>(companies, PageRequest.of(page, pageSize), pageSize));
 
         List<Company> actual = companyService.displayCompany(page, pageSize);
@@ -94,7 +94,7 @@ public class CompanyServiceTest {
         // given
         Company company = new Company("1", "Abc");
 
-        given(companyRepositoryNew.insert(company))
+        given(companyRepository.insert(company))
                 .willReturn(company);
 
         // when
@@ -110,10 +110,10 @@ public class CompanyServiceTest {
         Company updatedCompany = new Company("1", "Cde");
 
         // when
-        given(companyRepositoryNew.findById(any()))
+        given(companyRepository.findById(any()))
                 .willReturn(java.util.Optional.of(company));
 
-        given(companyRepositoryNew.save(any(Company.class)))
+        given(companyRepository.save(any(Company.class)))
                 .willReturn(updatedCompany);
 
         // then
@@ -126,12 +126,12 @@ public class CompanyServiceTest {
         //given
         Company company = new Company("1", "ABC");
         //when
-        willDoNothing().given(companyRepositoryNew).deleteById(any());
+        willDoNothing().given(companyRepository).deleteById(any());
 
         //then
         companyService.deleteCompany(company.getId());
 
-        verify(companyRepositoryNew).deleteById(company.getId());
+        verify(companyRepository).deleteById(company.getId());
     }
 
 }

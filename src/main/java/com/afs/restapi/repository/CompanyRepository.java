@@ -4,6 +4,7 @@ import com.afs.restapi.entity.Company;
 import com.afs.restapi.entity.Employee;
 import com.afs.restapi.exception.NoMatchIdFoundException;
 import com.afs.restapi.service.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -13,7 +14,9 @@ import java.util.stream.Collectors;
 @Repository
 public class CompanyRepository {
     private List<Company> companyList = new ArrayList<>();
-    public EmployeeService employeeService;
+
+    @Autowired
+    public EmployeeRepository employeeRepository;
 
     public CompanyRepository(){
         List<Employee> employeeListOfCompanyA = new ArrayList<>();
@@ -45,7 +48,9 @@ public class CompanyRepository {
     }
 
     public List<Employee> getEmployeeListByCompany(Integer id) {
-        return companyList.stream().filter(company -> company.getId().equals(id)).findFirst().get().getEmployees();
+        List<Employee> employeeList = employeeRepository.findEmployeeByCompanyId(id);
+        return employeeList;
+        //return companyList.stream().filter(company -> company.getId().equals(id)).findFirst().get().getEmployees();
     }
 
     public List<Company> displayCompany(Integer page, Integer pageSize) {

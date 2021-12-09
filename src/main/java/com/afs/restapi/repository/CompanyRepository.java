@@ -50,7 +50,6 @@ public class CompanyRepository {
     public List<Employee> getEmployeeListByCompany(Integer id) {
         List<Employee> employeeList = employeeRepository.findEmployeeByCompanyId(id);
         return employeeList;
-        //return companyList.stream().filter(company -> company.getId().equals(id)).findFirst().get().getEmployees();
     }
 
     public List<Company> displayCompany(Integer page, Integer pageSize) {

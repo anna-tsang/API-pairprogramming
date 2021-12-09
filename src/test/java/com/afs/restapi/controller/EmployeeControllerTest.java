@@ -75,23 +75,21 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$.gender").value("F"));
     }
 
-//    @Test
-//    void should_return_employee_when_perform_get_given_employee_id() throws Exception {
-//        //given
-//        Employee employee = new Employee(null,"Anna", 20,"F", 99999, "1");
-//        mockEmployeeRepositoryNew.insert(employee);
-//
-//        //when
-//        mockMvc.perform(MockMvcRequestBuilders.get(EMPLOYEE_ENDPOINT+"/{id}", employee.getId()))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.name").value("Anna"))
-//                .andExpect(jsonPath("$.gender").value("F"))
-//                .andExpect(jsonPath("$.age").value(20))
-//                .andExpect(jsonPath("$.salary").value(99999))
-//                .andExpect(jsonPath("$.companyId").value(1));
-//
-//        //then
-//    }
+    @Test
+    void should_return_employee_when_perform_get_given_employee_id() throws Exception {
+        //given
+        Employee employee = new Employee(null,"Anna", 20,"F", 99999, "1");
+        mockEmployeeRepositoryNew.insert(employee);
+
+        //when
+        mockMvc.perform(MockMvcRequestBuilders.get(EMPLOYEE_ENDPOINT+"/{id}", employee.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Anna"))
+                .andExpect(jsonPath("$.gender").value("F"))
+                .andExpect(jsonPath("$.age").value(20));
+
+        //then
+    }
 
 //    @Test
 //    void should_return_employees_when_perform_get_given_employee_gender() throws Exception {
@@ -107,12 +105,10 @@ public class EmployeeControllerTest {
 //                .andExpect(jsonPath("$[0].name").value("Anna"))
 //                .andExpect(jsonPath("$[0].gender").value("F"))
 //                .andExpect(jsonPath("$[0].age").value(20))
-//                .andExpect(jsonPath("$[0].salary").value(99999))
 //                .andExpect(jsonPath("$[1].id").value(2))
 //                .andExpect(jsonPath("$[1].name").value("Johnson"))
 //                .andExpect(jsonPath("$[1].gender").value("F"))
-//                .andExpect(jsonPath("$[1].age").value(20))
-//                .andExpect(jsonPath("$[1].salary").value(99999));
+//                .andExpect(jsonPath("$[1].age").value(20));
 //    }
 //
 //    @Test

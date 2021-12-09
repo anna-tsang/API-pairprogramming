@@ -24,6 +24,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
 public class CompanyServiceTest {
@@ -128,18 +129,18 @@ public class CompanyServiceTest {
         Company actual = companyService.edit("1", updatedCompany);
         assertEquals(updatedCompany, actual);
     }
-//
-//    @Test
-//    void should_return_company_when_delete_company_given_company_id() {
-//        //given
-//        Company company = new Company("1", "Anna Ltd");
-//        //when
-//        given(mockCompanyRepository.delete(any()))
-//                .willReturn(company);
-//        //then
-//        Company actual = companyService.delete(company.getId());
-//        assertEquals(company, actual);
-//    }
+
+    @Test
+    void should_return_company_when_delete_company_given_company_id() {
+        //given
+        Company company = new Company("1", "Anna Ltd");
+        //when
+        given(mockCompanyRepositoryNew.findById(any()))
+                .willReturn(java.util.Optional.of(company));
+        //then
+        companyService.delete(company.getId());
+        verify(mockCompanyRepositoryNew).delete(company);
+    }
 
 
 }

@@ -62,6 +62,8 @@ public class CompanyControllerTest {
         Company company = new Company(1, "Anna Ltd" );
         companyRepository.create(company);
         Company company2 = new Company(2, "Anna Company" );
+        Employee employeeJohnson = new Employee(1,"Johnson", 20,"F", 99999, 1);
+        employeeRepository.create(employeeJohnson);
         companyRepository.create(company2);
 
         //when
@@ -70,7 +72,8 @@ public class CompanyControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect((jsonPath("$.companyName").value("Anna Ltd")))
-                .andExpect((jsonPath("$.employees").value(IsNull.nullValue())));
+                .andExpect((jsonPath("$.employees[0].name").value("Johnson")))
+                .andExpect((jsonPath("$.employees[0].id").value("1")));
     }
 
     @Test

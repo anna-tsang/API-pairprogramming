@@ -21,7 +21,7 @@ public class CompanyService {
         return companyRepository.findAll();
     }
 
-    public Company edit(Integer id, Company updatedCompany) {
+    public Company edit(String id, Company updatedCompany) {
         Company company = companyRepository.findById(id);
         if(updatedCompany.getCompanyName() != null){
             company.setCompanyName(updatedCompany.getCompanyName());
@@ -32,14 +32,8 @@ public class CompanyService {
         return companyRepository.save(id,company);
     }
 
-    public Company findByCompanyId(Integer id) {
+    public Company findByCompanyId(String id) {
         return companyRepository.findById(id);
-    }
-
-    public Company setEmployeeByCompanyId(Integer id){
-        Company company = findByCompanyId(id);
-        company.setEmployees(employeeService.findEmployeeByCompanyId(id));
-        return company;
     }
 
     public List<Company> displayCompany(Integer page, Integer pageSize) {
@@ -50,11 +44,11 @@ public class CompanyService {
         return companyRepository.create(newCompany);
     }
 
-    public Company delete(Integer id) {
+    public Company delete(String id) {
         return companyRepository.delete(id);
     }
 
-    public List<Employee> getEmployeeListByCompany(Integer companyId){
+    public List<Employee> getEmployeeListByCompany(String companyId){
 
         return companyRepository.getEmployeeListByCompany(companyId);
     }

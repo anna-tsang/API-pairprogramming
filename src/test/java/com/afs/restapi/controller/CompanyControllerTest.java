@@ -46,7 +46,7 @@ public class CompanyControllerTest {
     @Test
     void should_return_company_list_when_perform_get_given_companies() throws Exception {
         //given
-        Company company = new Company(1, "Anna Ltd");
+        Company company = new Company("1", "Anna Ltd");
         companyRepository.create(company);
         //when
         //then
@@ -59,10 +59,10 @@ public class CompanyControllerTest {
     @Test
     void should_return_company_when_perform_get_given_company_id() throws Exception {
         //given
-        Company company = new Company(1, "Anna Ltd" );
+        Company company = new Company("1", "Anna Ltd" );
         companyRepository.create(company);
-        Company company2 = new Company(2, "Anna Company" );
-        Employee employeeJohnson = new Employee(1,"Johnson", 20,"F", 99999, 1);
+        Company company2 = new Company("2", "Anna Company" );
+        Employee employeeJohnson = new Employee("1","Johnson", 20,"F", 99999, "1");
         employeeRepository.create(employeeJohnson);
         companyRepository.create(company2);
 
@@ -79,14 +79,14 @@ public class CompanyControllerTest {
     @Test
     void should_return_employee_list_when_perform_get_given_company_id() throws Exception {
         //given
-        Employee employeeAnna = new Employee(null,"Anna", 20,"M", 20, 1);
+        Employee employeeAnna = new Employee(null,"Anna", 20,"M", 20, "1");
         employeeRepository.create(employeeAnna);
-        Employee employeeJohnson = new Employee(null,"Johnson", 20,"F", 99999, 1);
+        Employee employeeJohnson = new Employee(null,"Johnson", 20,"F", 99999, "1");
         employeeRepository.create(employeeJohnson);
 
-        Company company1 = new Company(1, "Anna Ltd");
+        Company company1 = new Company("1", "Anna Ltd");
         companyRepository.create(company1);
-        Company company2 = new Company(2, "Anna Company");
+        Company company2 = new Company("2", "Anna Company");
         companyRepository.create(company2);
         //when
         //then
@@ -102,13 +102,13 @@ public class CompanyControllerTest {
     @Test
     void should_given_display_employee_list_when_perform_get_given_page_and_page_size() throws Exception {
         //given
-        Employee employee = new Employee(1,"Anna", 20,"M", 20, 1);
+        Employee employee = new Employee("1","Anna", 20,"M", 20, "1");
         List<Employee> employees = Arrays.asList(employee);
-        Company companyA = new Company(1, "Anna Company");
+        Company companyA = new Company("1", "Anna Company");
         companyRepository.create(companyA);
-        Company companyB = new Company(2, "Bnna Company");
+        Company companyB = new Company("2", "Bnna Company");
         companyRepository.create(companyB);
-        Company companyC = new Company(3, "Cnna Company" );
+        Company companyC = new Company("3", "Cnna Company" );
         companyRepository.create(companyC);
         //when
         mockMvc.perform((MockMvcRequestBuilders.get(COMPANIES_ENDPOINT)
@@ -140,7 +140,7 @@ public class CompanyControllerTest {
     @Test
     void should_update_company_when_peform_put_given_company_Id_and_updated_Company() throws Exception {
         //given
-        Company company = new Company(1, "Anna Ltd");
+        Company company = new Company("1", "Anna Ltd");
         String updatedCompany = "{\n" +
                 "    \"id\": 1,\n" +
                 "    \"companyName\": \"Bnnb Ltd\"\n" +
@@ -160,7 +160,7 @@ public class CompanyControllerTest {
     @Test
     void should_delete_company_when_perform_delete_given_company_id() throws Exception {
         //given
-        Company company = new Company(1, "Anna Ltd");
+        Company company = new Company("1", "Anna Ltd");
         companyRepository.create(company);
         //when
         //then

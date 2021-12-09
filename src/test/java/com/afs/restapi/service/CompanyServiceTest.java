@@ -10,6 +10,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -75,23 +78,24 @@ public class CompanyServiceTest {
         List<Employee> actual = companyService.getEmployeeListByCompany("1");
         assertEquals(employeeList, actual);
     }
-//
-//
-//    @Test
-//    void should_return_companies_when_display_company_given_page_and_pageSize() {
-//        // given
-//        List<Company> companyList = new ArrayList<>();
-//
-//        companyList.add(new Company("1", "Anna Co"));
-//        companyList.add(new Company("2", "Bnnb Co"));
-//
-//        given(mockCompanyRepository.displayCompany(0, 2))
-//                .willReturn(companyList);
-//        // when
-//        // then
-//        List<Company> actual = companyService.displayCompany(0, 2);
-//        assertEquals(companyList, actual);
-//    }
+
+
+    @Test
+    void should_return_companies_when_display_company_given_page_and_pageSize() {
+        // given
+        List<Company> companyList = new ArrayList<>();
+
+        companyList.add(new Company("1", "Anna Co"));
+        companyList.add(new Company("2", "Bnnb Co"));
+
+        Pageable pageable = (Pageable) PageRequest.of(1,1);
+        given(mockCompanyRepositoryNew.findAll(pageable))
+                .willReturn(new PageImpl<>(companyList, PageRequest.of(1, 1), 1));
+        // when
+        // then
+        List<Company> actual = companyService.displayCompany(1, 1);
+        assertEquals(companyList, actual);
+    }
 //
 //    @Test
 //    void should_return_company_when_create_company_given_company() {

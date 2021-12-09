@@ -1,55 +1,60 @@
 package com.afs.restapi.service;
 
 import com.afs.restapi.entity.Employee;
+import com.afs.restapi.exception.EmployeeNotFoundException;
 import com.afs.restapi.repository.EmployeeRepository;
+import com.afs.restapi.repository.EmployeeRepositoryNew;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class EmployeeService {
-    private EmployeeRepository employeeRepository;
+    private EmployeeRepositoryNew employeeRepositoryNew;
 
-    public EmployeeService(EmployeeRepository employeeRepository){
-        this.employeeRepository = employeeRepository;
+    public EmployeeService(EmployeeRepositoryNew employeeRepositoryNew){
+        this.employeeRepositoryNew = employeeRepositoryNew;
     }
 
     public List<Employee> findAll() {
-        return employeeRepository.findAll();
+        return employeeRepositoryNew.findAll();
     }
 
     public Employee edit(String id, Employee updatedEmployee) {
-        Employee employee = employeeRepository.findById(id);
+        Employee employee = employeeRepositoryNew.findById(id).orElseThrow(EmployeeNotFoundException::new);
+
         if(updatedEmployee.getAge() != null){
             employee.setAge(updatedEmployee.getAge());
         }
         if (updatedEmployee.getSalary() != null){
             employee.setSalary(updatedEmployee.getSalary());
         }
-        return employeeRepository.save(id,employee);
+
+        return employeeRepositoryNew.save(employee);
     }
 
     public Employee findById(String id) {
-        return employeeRepository.findById(id);
+        return employeeRepositoryNew.findById(id).orElseThrow(EmployeeNotFoundException::new);
     }
 
     public List<Employee> findByGender(String gender) {
-        return employeeRepository.findByGender(gender);
+        return employeeRepositoryNew.findByGender(gender);
     }
 
     public List<Employee> displayEmployee(Integer page, Integer pageSize) {
-        return employeeRepository.displayEmployee(page,pageSize);
+        return employeeRepositoryNew.findAll(PageRequest.of(page, pageSize)).getContent();
     }
 
     public Employee create(Employee newEmployee) {
-        return employeeRepository.create(newEmployee);
+        return employeeRepositoryNew.insert(newEmployee);
     }
 
-    public Employee delete(String id) {
-        return employeeRepository.delete(id);
+    public void delete(String id) {
+        employeeRepositoryNew.deleteById(id);
     }
 
     public List<Employee> findByCompanyId(String companyId) {
-        return employeeRepository.findByCompanyId(companyId);
+        return employeeRepositoryNew.findByCompanyId(companyId);
     }
 }

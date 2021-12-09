@@ -43,22 +43,22 @@ public class CompanyServiceTest {
         //then
         assertEquals(companyList, actual);
     }
-//
-//    @Test
-//    void should_return_company_when_perform_get_given_company_id() {
-//        //given
-//        Company company1 = new Company("1", "Anna Ltd");
-//        Company company2 = new Company("2", "Bnna Ltd");
-//        List<Company> companyList = new ArrayList<>();
-//        companyList.add(company1);
-//        companyList.add(company2);
-//        //when
-//        given(mockCompanyRepository.findById(any()))
-//                .willReturn(company1);
-//        Company actual = companyService.findByCompanyId("1");
-//        //then
-//        assertEquals(company1, actual);
-//    }
+
+    @Test
+    void should_return_company_when_perform_get_given_company_id() {
+        //given
+        Company company1 = new Company("1", "Anna Ltd");
+        Company company2 = new Company("2", "Bnna Ltd");
+        List<Company> companyList = new ArrayList<>();
+        companyList.add(company1);
+        companyList.add(company2);
+        //when
+        given(mockCompanyRepositoryNew.findById(any()))
+                .willReturn(java.util.Optional.of(company1));
+        Company actual = companyService.findByCompanyId("1");
+        //then
+        assertEquals(company1, actual);
+    }
 //
 //    @Test
 //    void should_return_employee_list_when_perform_put_given_company_id() {

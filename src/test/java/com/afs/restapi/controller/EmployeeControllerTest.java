@@ -32,14 +32,14 @@ public class EmployeeControllerTest {
     @Autowired
     EmployeeRepositoryNew mockEmployeeRepositoryNew;
 
-//    @BeforeEach
-//    void cleanRepositoryBefore(){
-//        mockEmployeeRepositoryNew.deleteAll();;
-//    }
-//    @AfterEach
-//    void cleanRepositoryAfter(){
-//        mockEmployeeRepositoryNew.deleteAll();;
-//    }
+    @BeforeEach
+    void cleanRepositoryBefore(){
+        mockEmployeeRepositoryNew.deleteAll();;
+    }
+    @AfterEach
+    void cleanRepositoryAfter(){
+        mockEmployeeRepositoryNew.deleteAll();;
+    }
 
     @Test
     void should_get_all_employees_when_perform_get_given_employees() throws Exception {
@@ -57,25 +57,23 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$[0].gender").value("F"));
     }
 
-//    @Test
-//    void should_return_employee_when_perform_post_given_employee() throws Exception {
-//        //given
-//        String employee = "{\n" +
-//                "        \"name\": \"Anna\",\n" +
-//                "        \"age\": 20,\n" +
-//                "        \"gender\": \"F\",\n" +
-//                "        \"salary\": 99999\n" +
-//                "    }";
-//        //when
-//        mockMvc.perform(post(EMPLOYEE_ENDPOINT)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(employee))
-//                .andExpect(status().isCreated())
-//                .andExpect(jsonPath("$",hasSize(1)))
-//                .andExpect(jsonPath("$.name").value("Anna"))
-//                .andExpect(jsonPath("$.gender").value("F"))
-//                .andExpect(jsonPath("$.salary").value(99999));
-//    }
+    @Test
+    void should_return_employee_when_perform_post_given_employee() throws Exception {
+        //given
+        String employee = "{\n" +
+                "        \"name\": \"Anna\",\n" +
+                "        \"age\": 20,\n" +
+                "        \"gender\": \"F\",\n" +
+                "        \"salary\": 99999\n" +
+                "    }";
+        //when
+        mockMvc.perform(post(EMPLOYEE_ENDPOINT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(employee))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name").value("Anna"))
+                .andExpect(jsonPath("$.gender").value("F"));
+    }
 
 //    @Test
 //    void should_return_employee_when_perform_get_given_employee_id() throws Exception {

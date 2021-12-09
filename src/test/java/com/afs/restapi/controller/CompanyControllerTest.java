@@ -91,29 +91,29 @@ public class CompanyControllerTest {
                 .andExpect((jsonPath("$[0].age").value(20)))
                 .andExpect((jsonPath("$[0].gender").value("M")));
     }
-//
-//    @Test
-//    void should_given_display_employee_list_when_perform_get_given_page_and_page_size() throws Exception {
-//        //given
-//        Employee employee = new Employee("1","Anna", 20,"M", 20, "1");
-//        List<Employee> employees = Arrays.asList(employee);
-//        Company companyA = new Company("1", "Anna Company");
-//        companyRepository.create(companyA);
-//        Company companyB = new Company("2", "Bnna Company");
-//        companyRepository.create(companyB);
-//        Company companyC = new Company("3", "Cnna Company" );
-//        companyRepository.create(companyC);
-//        //when
-//        mockMvc.perform((MockMvcRequestBuilders.get(COMPANIES_ENDPOINT)
-//                        .param("page","1")
-//                        .param("pageSize","2")))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$[0].id").isNumber())
-//                .andExpect((jsonPath("$[0].companyName").value("Cnna Company")))
-//                .andExpect((jsonPath("$[0].employees").value(IsNull.nullValue())));
-//        //then
-//    }
-//
+
+    @Test
+    void should_given_display_employee_list_when_perform_get_given_page_and_page_size() throws Exception {
+        //given
+        Employee employee = new Employee("1","Anna", 20,"M", 20, "1");
+        List<Employee> employees = Arrays.asList(employee);
+        Company companyA = new Company("1", "Anna Company");
+        companyRepositoryNew.insert(companyA);
+        Company companyB = new Company("2", "Bnna Company");
+        companyRepositoryNew.insert(companyB);
+        Company companyC = new Company("3", "Cnna Company" );
+        companyRepositoryNew.insert(companyC);
+        //when
+        mockMvc.perform((MockMvcRequestBuilders.get(COMPANIES_ENDPOINT)
+                        .param("page","1")
+                        .param("pageSize","2")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").isString())
+                .andExpect((jsonPath("$[0].companyName").value("Cnna Company")))
+                .andExpect((jsonPath("$[0].employees").value(IsNull.nullValue())));
+        //then
+    }
+
 //    @Test
 //    void should_return_new_company_when_perform_post_given_new_company() throws Exception {
 //        //given

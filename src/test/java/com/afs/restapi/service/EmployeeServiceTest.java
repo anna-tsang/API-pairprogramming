@@ -1,12 +1,12 @@
 package com.afs.restapi.service;
 
 import com.afs.restapi.entity.Employee;
-import com.afs.restapi.repository.EmployeeRepository;
-import com.afs.restapi.service.EmployeeService;
+import com.afs.restapi.repository.EmployeeRepositoryNew;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.data.domain.*;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
@@ -15,15 +15,15 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
 public class EmployeeServiceTest {
     @Mock
-    EmployeeRepository mockEmployeeRepository;
+    EmployeeRepositoryNew employeeRepositoryNew;
+
     @InjectMocks
     EmployeeService employeeService;
 
@@ -31,7 +31,7 @@ public class EmployeeServiceTest {
     void should_return_all_employees_when_find_all_given_employees() {
         //given
         List<Employee> employees = Arrays.asList(new Employee("1", "Anna", 20, "F", 99999, "1"));
-        given(mockEmployeeRepository.findAll())
+        given(employeeRepositoryNew.findAll())
                 .willReturn(employees);
         //when
         List<Employee> actual = employeeService.findAll();
@@ -46,19 +46,19 @@ public class EmployeeServiceTest {
         Employee employee = new Employee("1","Anna", 20, "F", 9999, "1");
         Employee updatedEmployee = new Employee("1","Anna", 99, "F", 9999, "1");
 
-        given(mockEmployeeRepository.findById(any()))
-                .willReturn(employee);
+        given(employeeRepositoryNew.findById(any()))
+                .willReturn(java.util.Optional.of(employee));
 
         employee.setAge(updatedEmployee.getAge());
         employee.setSalary(updatedEmployee.getSalary());
 
-        given(mockEmployeeRepository.save(any(),any(Employee.class)))
+        given(employeeRepositoryNew.save(any(Employee.class)))
                 .willReturn(employee);
 
         //when
         Employee actual = employeeService.edit(employee.getId(), updatedEmployee);
         //then
-        verify(mockEmployeeRepository).save(employee.getId(), employee);
+        verify(employeeRepositoryNew).save(employee);
         assertEquals(employee, actual);
     }
 
@@ -68,8 +68,8 @@ public class EmployeeServiceTest {
         Employee employee = new Employee("1", "Anna", 20, "M", 100, "1");
 
         //when
-        given(mockEmployeeRepository.findById(any()))
-                .willReturn(employee);
+        given(employeeRepositoryNew.findById(any()))
+                .willReturn(java.util.Optional.of(employee));
 
         Employee actual = employeeService.findById(employee.getId());
 
@@ -87,7 +87,7 @@ public class EmployeeServiceTest {
         employees.add(employeeB);
         List<Employee> employeeMale = Arrays.asList(employeeA);
         //when
-        given(mockEmployeeRepository.findByGender(any()))
+        given(employeeRepositoryNew.findByGender(any()))
                 .willReturn(employeeMale);
         List<Employee> actual = employeeService.findByGender("M");
         //then
@@ -118,13 +118,20 @@ public class EmployeeServiceTest {
         Integer pageSize = 2;
 
         //when
-        given(mockEmployeeRepository.displayEmployee(any(), any()))
-                .willReturn(firstPageWith2Employees);
+        given(employeeRepositoryNew.findAll((Pageable) any()))
+                .willReturn(new PageImpl<>(employees, PageRequest.of(page, pageSize), pageSize));
 
         List<Employee> actual = employeeService.displayEmployee(page, pageSize);
-        //then
 
-        assertEquals(firstPageWith2Employees, actual);
+        //then
+        assertEquals(firstPageWith2Employees.get(0).getName(), actual.get(0).getName());
+        assertEquals(firstPageWith2Employees.get(0).getAge(), actual.get(0).getAge());
+        assertEquals(firstPageWith2Employees.get(0).getGender(), actual.get(0).getGender());
+        assertEquals(firstPageWith2Employees.get(0).getSalary(), actual.get(0).getSalary());
+        assertEquals(firstPageWith2Employees.get(1).getName(), actual.get(1).getName());
+        assertEquals(firstPageWith2Employees.get(1).getAge(), actual.get(1).getAge());
+        assertEquals(firstPageWith2Employees.get(1).getGender(), actual.get(1).getGender());
+        assertEquals(firstPageWith2Employees.get(1).getSalary(), actual.get(1).getSalary());
     }
 
     @Test
@@ -133,7 +140,7 @@ public class EmployeeServiceTest {
         Employee employee = new Employee("1" ,"Anna", 20, "M", 100, "1");
 
         //when
-        given(mockEmployeeRepository.create(any()))
+        given(employeeRepositoryNew.insert(any(Employee.class)))
                 .willReturn(employee);
 
         //then
@@ -145,13 +152,12 @@ public class EmployeeServiceTest {
     @Test
     void should_deleted_employee_when_perform_delete_given_employee_id() {
         //given
-        Employee employee = new Employee("1" ,"Anna", 20, "M", 100, "1");
+        String id = "1";
         //when
-        given(mockEmployeeRepository.delete(any()))
-                .willReturn(employee);
+        willDoNothing().given(employeeRepositoryNew).deleteById(id);
         //then
-        Employee actual = employeeService.delete(employee.getId());
-        assertEquals(employee, actual);
+        employeeService.delete(id);
+        verify(employeeRepositoryNew).deleteById(id);
     }
 
     @Test
@@ -163,7 +169,7 @@ public class EmployeeServiceTest {
         List<Employee> employees = Arrays.asList(employee, employee2);
         List<Employee> employeesWithCompanyId1 = Arrays.asList(employee);
 
-        given(mockEmployeeRepository.findByCompanyId(any()))
+        given(employeeRepositoryNew.findByCompanyId(any()))
                 .willReturn(employeesWithCompanyId1);
 
         // when

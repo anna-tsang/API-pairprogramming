@@ -2,7 +2,6 @@ package com.afs.restapi.service;
 
 import com.afs.restapi.entity.Company;
 import com.afs.restapi.entity.Employee;
-import com.afs.restapi.exception.NoMatchIdFoundException;
 import com.afs.restapi.repository.CompanyRepository;
 import com.afs.restapi.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
@@ -18,12 +17,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
 public class CompanyServiceTest {
@@ -120,9 +116,7 @@ public class CompanyServiceTest {
                 .willReturn(company);
         //then
         Company actual = companyService.delete(company.getId());
-
-        verify(mockCompanyRepository).delete(company.getId());
-        //assertEquals(company, actual);
+        assertEquals(company, actual);
     }
 
 

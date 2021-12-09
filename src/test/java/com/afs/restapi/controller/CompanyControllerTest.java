@@ -8,6 +8,7 @@ import com.afs.restapi.repository.EmployeeRepository;
 import com.afs.restapi.repository.EmployeeRepositoryNew;
 import com.afs.restapi.service.CompanyService;
 import org.hamcrest.core.IsNull;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +45,8 @@ public class CompanyControllerTest {
     @Autowired
     EmployeeRepositoryNew employeeRepositoryNew;
 
-    @BeforeEach
+    @AfterEach
     void cleanRepository(){
-//        companyRepository.clearAll();
-//        employeeRepository.clearAll();
         companyRepositoryNew.deleteAll();
         employeeRepositoryNew.deleteAll();
     }
@@ -55,7 +54,7 @@ public class CompanyControllerTest {
     @Test
     void should_return_company_list_when_perform_get_given_companies() throws Exception {
         //given
-        Company company = new Company("1", "Anna Ltd");
+        Company company = new Company(null, "Anna Ltd");
         companyRepositoryNew.insert(company);
         //when
         //then
@@ -68,10 +67,10 @@ public class CompanyControllerTest {
     @Test
     void should_return_company_when_perform_get_given_company_id() throws Exception {
         //given
-        Company company = new Company("1", "Anna Ltd");
-        companyRepository.create(company);
-        Company company2 = new Company("2", "Anna Company");
-        companyRepository.create(company2);
+        Company company = new Company(null, "Anna Ltd");
+        companyRepositoryNew.insert(company);
+        Company company2 = new Company(null, "Anna Company");
+        companyRepositoryNew.insert(company2);
 
         //when
         //then
@@ -79,21 +78,21 @@ public class CompanyControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isString())
                 .andExpect((jsonPath("$.companyName").value("Anna Ltd")));
-//                .andExpect((jsonPath("$.employees").value(IsNull.nullValue())));
     }
 
     @Test
     void should_return_employee_list_when_perform_get_given_company_id() throws Exception {
         //given
-        Employee employeeAnna = new Employee(null,"Anna", 20,"M", 20, "1");
-        employeeRepository.create(employeeAnna);
-        Employee employeeJohnson = new Employee(null,"Johnson", 20,"F", 99999, "1");
-        employeeRepository.create(employeeJohnson);
+        Company company = new Company(null, "Anna Ltd");
+        companyRepositoryNew.insert(company);
+        Company company2 = new Company(null, "Anna Company");
+        companyRepositoryNew.insert(company2);
 
-        Company company = new Company("1", "Anna Ltd");
-        companyRepository.create(company);
-        Company company2 = new Company("2", "Anna Company");
-        companyRepository.create(company2);
+
+        Employee employeeAnna = new Employee(null,"Anna", 20,"M", 20, company.getId());
+        employeeRepositoryNew.insert(employeeAnna);
+        Employee employeeJohnson = new Employee(null,"Johnson", 20,"F", 99999, company.getId());
+        employeeRepositoryNew.insert(employeeJohnson);
 
         //when
         //then
@@ -103,7 +102,6 @@ public class CompanyControllerTest {
                 .andExpect((jsonPath("$[0].name")).value("Anna"))
                 .andExpect((jsonPath("$[0].age").value(20)))
                 .andExpect((jsonPath("$[0].gender").value("M")));
-//                .andExpect((jsonPath("$[0].salary").value(20)));
     }
 
     @Test
@@ -115,11 +113,11 @@ public class CompanyControllerTest {
         Company company4 = new Company("4", "ABC4");
         Company company5 = new Company("5", "ABC5");
 
-        companyRepository.create(company1);
-        companyRepository.create(company2);
-        companyRepository.create(company3);
-        companyRepository.create(company4);
-        companyRepository.create(company5);
+        companyRepositoryNew.insert(company1);
+        companyRepositoryNew.insert(company2);
+        companyRepositoryNew.insert(company3);
+        companyRepositoryNew.insert(company4);
+        companyRepositoryNew.insert(company5);
 
         Integer page = 0;
         Integer pageSize = 2;
@@ -130,9 +128,9 @@ public class CompanyControllerTest {
                 .param("page", String.valueOf(page))
                 .param("pageSize", String.valueOf(pageSize)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].id").isString())
                 .andExpect(jsonPath("$[0].companyName").value("ABC"))
-                .andExpect(jsonPath("$[1].id").value(2))
+                .andExpect(jsonPath("$[1].id").isString())
                 .andExpect(jsonPath("$[1].companyName").value("ABC2"));
 
     }
@@ -149,44 +147,44 @@ public class CompanyControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(company))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.id").isString())
                 .andExpect(jsonPath("$.companyName").value("Anna Ltd"));
     }
 
     @Test
     void should_update_company_when_peform_put_given_companyId_and_updatedCompany() throws Exception {
         //given
-        Company company = new Company("1", "Anna Ltd");
+        Company company = new Company(null, "Anna Ltd");
+
+        companyRepositoryNew.insert(company);
+
         String updatedCompany = "{\n" +
-                "    \"id\": 1,\n" +
+                "    \"id\": \"" + company.getId() + "\",\n" +
                 "    \"companyName\": \"ABC Ltd\"\n" +
                 "}";
-
-        companyRepository.create(company);
 
         //when
         mockMvc.perform(MockMvcRequestBuilders.put(COMPANIES_ENDPOINT + "/{id}", company.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(updatedCompany))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.id").isString())
                 .andExpect(jsonPath("$.companyName").value("ABC Ltd"));
     }
 
     @Test
     void should_delete_company_when_perform_delete_given_company_id() throws Exception {
         //given
-        Company company = new Company("1", "ABC Ltd");
-        companyRepository.create(company);
+        Company company = new Company(null, "ABC Ltd");
+        companyRepositoryNew.insert(company);
+
+        int size = companyRepositoryNew.findAll().size();
 
         //when
         //then
         mockMvc.perform(MockMvcRequestBuilders.delete(COMPANIES_ENDPOINT +"/{id}", company.getId()))
                 .andExpect(status().isNoContent());
 
-        assertEquals(0, companyRepository.findAll().size());
+        assertEquals(--size, companyRepositoryNew.findAll().size());
     }
-
-
-
 }

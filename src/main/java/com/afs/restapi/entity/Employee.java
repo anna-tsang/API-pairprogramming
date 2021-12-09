@@ -17,6 +17,10 @@ public class Employee {
         this.companyId = companyId;
     }
 
+    public Employee() {
+
+    }
+
     public String getId() {
         return id;
     }

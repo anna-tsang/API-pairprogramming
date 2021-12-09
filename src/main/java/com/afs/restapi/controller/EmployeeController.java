@@ -1,6 +1,8 @@
 package com.afs.restapi.controller;
 
+import com.afs.restapi.dto.EmployeeRequest;
 import com.afs.restapi.entity.Employee;
+import com.afs.restapi.mapper.EmployeeMapper;
 import com.afs.restapi.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,9 +22,11 @@ import java.util.List;
 @RequestMapping("employees")
 public class EmployeeController {
     public EmployeeService employeeService;
+    private EmployeeMapper employeeMapper;
 
-    public EmployeeController(EmployeeService employeeService){
+    public EmployeeController(EmployeeService employeeService, EmployeeMapper employeeMapper){
         this.employeeService = employeeService;
+        this.employeeMapper = employeeMapper;
     }
 
     @GetMapping
@@ -47,20 +51,20 @@ public class EmployeeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Employee createEmployee(@RequestBody Employee employee){
-        return employeeService.create(employee);
+    public Employee createEmployee(@RequestBody EmployeeRequest employeeRequest){
+        return employeeService.create(employeeMapper.toEntity(employeeRequest));
     }
 
     @PutMapping("/{id}")
-    public Employee editEmployee(@PathVariable String id, @RequestBody Employee updatedEmployee){
-        Employee employee = employeeService.findById(id);
-        if(updatedEmployee.getAge() != null){
-            employee.setAge(updatedEmployee.getAge());
-        }
-        if(updatedEmployee.getSalary() != null){
-            employee.setSalary(updatedEmployee.getSalary());
-        }
-        return employeeService.edit(id, employee);
+    public Employee editEmployee(@PathVariable String id, @RequestBody EmployeeRequest employeeRequest){
+//        Employee employee = employeeService.findById(id);
+//        if(updatedEmployee.getAge() != null){
+//            employee.setAge(updatedEmployee.getAge());
+//        }
+//        if(updatedEmployee.getSalary() != null){
+//            employee.setSalary(updatedEmployee.getSalary());
+//        }
+        return employeeService.edit(id, employeeMapper.toEntity(employeeRequest));
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)

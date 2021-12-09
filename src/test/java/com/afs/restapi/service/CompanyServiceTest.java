@@ -96,20 +96,20 @@ public class CompanyServiceTest {
         List<Company> actual = companyService.displayCompany(1, 1);
         assertEquals(companyList, actual);
     }
-//
-//    @Test
-//    void should_return_company_when_create_company_given_company() {
-//        // given
-//        Company company = new Company("1", "Abc");
-//
-//        given(mockCompanyRepository.create(company))
-//                .willReturn(company);
-//
-//        // when
-//        // then
-//        Company actual = companyService.create(company);
-//        assertEquals(company, actual);
-//    }
+
+    @Test
+    void should_return_company_when_create_company_given_company() {
+        // given
+        Company company = new Company("1", "Abc");
+
+        given(mockCompanyRepositoryNew.insert(company))
+                .willReturn(company);
+
+        // when
+        // then
+        Company actual = companyService.create(company);
+        assertEquals(company, actual);
+    }
 //
 //    @Test
 //    void should_return_company_when_edit_company_given_company_id_and_updated_company() {

@@ -44,9 +44,9 @@ public class CompanyRepository {
                 .orElseThrow(CompanyNotFoundException::new);
     }
 
-    public List<Employee> getEmployeeListByCompany(String id) {
-        return companyList.stream().filter(company -> company.getId().equals(id)).findFirst().get().getEmployees();
-    }
+//    public List<Employee> getEmployeeListByCompany(String id) {
+//        return companyList.stream().filter(company -> company.getId().equals(id)).findFirst().get().getEmployees();
+//    }
 
     public List<Company> displayCompany(Integer page, Integer pageSize) {
         return companyList.stream()

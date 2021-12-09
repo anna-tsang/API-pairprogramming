@@ -1,6 +1,7 @@
 package com.afs.restapi.controller;
 
 import com.afs.restapi.dto.EmployeeRequest;
+import com.afs.restapi.dto.EmployeeResponse;
 import com.afs.restapi.entity.Employee;
 import com.afs.restapi.mapper.EmployeeMapper;
 import com.afs.restapi.service.EmployeeService;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("employees")
@@ -30,33 +32,39 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<Employee> getEmployee(){
-        return employeeService.findAll();
+    public List<EmployeeResponse> getEmployee(){
+        return employeeService.findAll().stream()
+                .map(employee -> employeeMapper.toResponse(employee))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public Employee getEmployeeById(@PathVariable String id){
-        return employeeService.findById(id);
+    public EmployeeResponse getEmployeeById(@PathVariable String id){
+        return employeeMapper.toResponse(employeeService.findById(id));
     }
 
     @GetMapping(params = {"gender"})
-    public List<Employee> getEmployeesByGender(@RequestParam String gender){
-        return employeeService.findByGender(gender);
+    public List<EmployeeResponse> getEmployeesByGender(@RequestParam String gender){
+        return employeeService.findByGender(gender).stream()
+                .map(employee -> employeeMapper.toResponse(employee))
+                .collect(Collectors.toList());
     }
 
     @GetMapping(params = {"page","pageSize"})
-    public List<Employee> displayEmployee(@RequestParam Integer page, @RequestParam Integer pageSize){
-        return employeeService.displayEmployee(page,pageSize);
+    public List<EmployeeResponse> displayEmployee(@RequestParam Integer page, @RequestParam Integer pageSize){
+        return employeeService.displayEmployee(page,pageSize).stream()
+                .map(employee -> employeeMapper.toResponse(employee))
+                .collect(Collectors.toList());
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Employee createEmployee(@RequestBody EmployeeRequest employeeRequest){
-        return employeeService.create(employeeMapper.toEntity(employeeRequest));
+    public EmployeeResponse createEmployee(@RequestBody EmployeeRequest employeeRequest){
+        return employeeMapper.toResponse(employeeService.create(employeeMapper.toEntity(employeeRequest)));
     }
 
     @PutMapping("/{id}")
-    public Employee editEmployee(@PathVariable String id, @RequestBody EmployeeRequest employeeRequest){
+    public EmployeeResponse editEmployee(@PathVariable String id, @RequestBody EmployeeRequest employeeRequest){
 //        Employee employee = employeeService.findById(id);
 //        if(updatedEmployee.getAge() != null){
 //            employee.setAge(updatedEmployee.getAge());
@@ -64,13 +72,13 @@ public class EmployeeController {
 //        if(updatedEmployee.getSalary() != null){
 //            employee.setSalary(updatedEmployee.getSalary());
 //        }
-        return employeeService.edit(id, employeeMapper.toEntity(employeeRequest));
+        return employeeMapper.toResponse(employeeService.edit(id, employeeMapper.toEntity(employeeRequest)));
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public Employee deleteEmployee(@PathVariable String id){
+    public EmployeeResponse deleteEmployee(@PathVariable String id){
         Employee employee = employeeService.findById(id);
-        return employeeService.delete(id);
+        return employeeMapper.toResponse(employeeService.delete(id));
     }
 }

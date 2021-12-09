@@ -37,7 +37,7 @@ public class CompanyServiceTest {
 
         List<Company> companies = Arrays.asList(new Company("1", "ABC Ltd")) ;
 
-        companies.forEach(company -> company.setEmployees(employees));
+//        companies.forEach(company -> company.setEmployees(employees));
 
         given(companyRepository.findAll())
                 .willReturn(companies);

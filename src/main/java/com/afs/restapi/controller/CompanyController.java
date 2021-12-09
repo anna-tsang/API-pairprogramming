@@ -1,6 +1,11 @@
 package com.afs.restapi.controller;
 
+import com.afs.restapi.dto.CompanyRequest;
+import com.afs.restapi.dto.CompanyResponse;
+import com.afs.restapi.dto.EmployeeResponse;
 import com.afs.restapi.entity.Company;
+import com.afs.restapi.mapper.CompanyMapper;
+import com.afs.restapi.mapper.EmployeeMapper;
 import com.afs.restapi.service.CompanyService;
 import com.afs.restapi.entity.Employee;
 import com.afs.restapi.repository.EmployeeRepository;
@@ -17,39 +22,52 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("companies")
 public class CompanyController {
     public CompanyService companyService;
     public EmployeeService employeeService;
+    public CompanyMapper companyMapper;
+    public EmployeeMapper employeeMapper;
 
-    public CompanyController(CompanyService companyService, EmployeeService employeeService){
+    public CompanyController(CompanyService companyService, EmployeeService employeeService, CompanyMapper companyMapper, EmployeeMapper employeeMapper){
         this.companyService = companyService;
         this.employeeService = employeeService;
+        this.companyMapper = companyMapper;
+        this.employeeMapper = employeeMapper;
     }
 
     @GetMapping
     public List<Company> getCompany(){
         List<Company> companies = companyService.getCompanies();
 
-        companies.forEach(company -> {
-            List<Employee> employees = employeeService.findByCompanyId(company.getId());
-            company.setEmployees(employees);
-        });
+//        companies.forEach(company -> {
+//            List<Employee> employees = employeeService.findByCompanyId(company.getId());
+//            company.setEmployees(employees);
+//        });
 
-        return companies;
+//        return companies.stream()
+//                .map(company -> companyMapper.toResponse(company, new ArrayList<>()))
+//                .collect(Collectors.toList());
+        return companyService.getCompanies();
     }
 
     @GetMapping("/{id}")
-    public Company getCompanyById(@PathVariable String id){
-        return companyService.getCompanyById(id);
+    public CompanyResponse getCompanyById(@PathVariable String id){
+        Company company = companyService.getCompanyById(id);
+        List<Employee> employees = employeeService.findByCompanyId(company.getId());
+        return companyMapper.toResponse(company, employees);
     }
 
     @GetMapping("/{id}/employees")
-    public List<Employee> getEmployeeListByCompany(@PathVariable String id){
-        return employeeService.findByCompanyId(id);
+    public List<EmployeeResponse> getEmployeeListByCompany(@PathVariable String id){
+        return employeeService.findByCompanyId(id).stream()
+                .map(employee -> employeeMapper.toResponse(employee))
+                .collect(Collectors.toList());
     }
 
     @GetMapping(params = {"page","pageSize"})
@@ -69,9 +87,9 @@ public class CompanyController {
         if(updatedCompany.getCompanyName() != null){
             company.setCompanyName(updatedCompany.getCompanyName());
         }
-        if(updatedCompany.getEmployees() != null){
-            company.setEmployees(updatedCompany.getEmployees());
-        }
+//        if(updatedCompany.getEmployees() != null){
+//            company.setEmployees(updatedCompany.getEmployees());
+//        }
         return companyService.editCompany(id,company);
     }
 

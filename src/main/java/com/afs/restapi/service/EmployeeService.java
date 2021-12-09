@@ -11,11 +11,9 @@ import java.util.List;
 
 @Service
 public class EmployeeService {
-    private EmployeeRepository employeeRepository;
     private EmployeeRepositoryNew employeeRepositoryNew;
 
-    public EmployeeService(EmployeeRepository employeeRepository,EmployeeRepositoryNew employeeRepositoryNew){
-        this.employeeRepository = employeeRepository;
+    public EmployeeService(EmployeeRepositoryNew employeeRepositoryNew){
         this.employeeRepositoryNew = employeeRepositoryNew;
     }
 

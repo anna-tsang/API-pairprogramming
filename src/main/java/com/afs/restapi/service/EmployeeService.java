@@ -4,6 +4,7 @@ import com.afs.restapi.entity.Employee;
 import com.afs.restapi.exception.NoMatchIdFoundException;
 import com.afs.restapi.repository.EmployeeRepository;
 import com.afs.restapi.repository.EmployeeRepositoryNew;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,8 +42,8 @@ public class EmployeeService {
         return employeeRepositoryNew.findAllByGender(gender);
     }
 
-    public List<Employee> displayEmployee(Integer page, Integer pageSize) {
-        return employeeRepository.displayEmployee(page,pageSize);
+    public List<Employee> displayEmployee(int page, int pageSize) {
+        return employeeRepositoryNew.findAll(PageRequest.of(page, pageSize)).getContent();
     }
 
     public Employee create(Employee newEmployee) {

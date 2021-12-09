@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
@@ -98,38 +101,23 @@ public class EmployeeServiceTest {
         assertEquals(employeeMale, actual);
     }
 
-//    @Test
-//    void should_return_employees_when_perform_get_given_page_and_pageSize() {
-//        //given
-//        List<Employee> employees = new ArrayList<>();
-//
-//        Employee employee = new Employee ("1","Anna",20,"F",5000, "1");
-//        Employee employee2 = new Employee ("2","Johnson",20,"M",4000, "1");
-//
-//        employees.add(new Employee ("1","Anna",20,"F",5000, "1"));
-//        employees.add(new Employee ("2","Johnson",20,"M",4000, "1"));
-//        employees.add(new Employee ("3","Apple",20,"F",4000, "1"));
-//        employees.add(new Employee ("4","April",20,"M",4000, "1"));
-//        employees.add(new Employee ("5","May",20,"M",4000, "1"));
-//        employees.add(new Employee ("6","June",20,"M",4000, "1"));
-//
-//        List<Employee> firstPageWith2Employees = new ArrayList<>();
-//
-//        firstPageWith2Employees.add(employee);
-//        firstPageWith2Employees.add(employee2);
-//
-//        Integer page = 0;
-//        Integer pageSize = 2;
-//
-//        //when
-//        given(mockEmployeeRepository.displayEmployee(any(), any()))
-//                .willReturn(firstPageWith2Employees);
-//
-//        List<Employee> actual = employeeService.displayEmployee(page, pageSize);
-//        //then
-//
-//        assertEquals(firstPageWith2Employees, actual);
-//    }
+    @Test
+    public void should_return_employees_when_get_given_page_and_page_size() {
+        List<Employee> employees = new ArrayList<>();
+        Employee firstEmployee = new Employee("1", "jojo", 29, "Male", 1,"1");
+        Employee secondEmployee = new Employee("2", "john", 30, "Male", 66666,"1");
+        employees.add(firstEmployee);
+        employees.add(secondEmployee);
+        Pageable pageable = (Pageable) PageRequest.of(1,1);
+        given(mockEmployeeRepositoryNew.findAll(pageable))
+                .willReturn(new PageImpl<>(employees, PageRequest.of(1, 1), 1));
+
+        List<Employee> actual = employeeService.displayEmployee(1,1);
+        assertEquals("jojo",actual.get(0).getName());
+        assertEquals(29,actual.get(0).getAge());
+        assertEquals("Male",actual.get(0).getGender());
+        assertEquals(1,actual.get(0).getSalary());
+    }
 
     @Test
     void should_return_employee_when_perform_post_given_new_employee() {

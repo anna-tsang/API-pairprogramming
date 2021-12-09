@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -55,20 +56,20 @@ public class CompanyControllerTest {
                 .andExpect(jsonPath("$[0].id").isString())
                 .andExpect((jsonPath("$[0].companyName").value("Anna Ltd")));
     }
-//
-//    @Test
-//    void should_return_company_when_perform_get_given_company_id() throws Exception {
-//        //given
-//        Company company = new Company(null, "Anna Ltd" );
-//        companyRepositoryNew.insert(company);
-//
-//        //when
-//        //then
-//        mockMvc.perform(MockMvcRequestBuilders.get(COMPANIES_ENDPOINT + "/{id}", company.getId()))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.id").isString())
-//                .andExpect((jsonPath("$.companyName").value("Anna Ltd")));
-//    }
+
+    //have problem
+    @Test
+    void should_return_company_when_perform_get_given_company_id() throws Exception {
+        //given
+        Company company = new Company( "Anna Ltd" );
+        companyRepositoryNew.insert(company);
+
+        //when
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.get(COMPANIES_ENDPOINT + "/{id}", company.getId()))
+                .andExpect(status().isOk())
+                .andExpect((jsonPath("$.name").value("Anna Ltd")));
+    }
 
     @Test
     void should_return_employee_list_when_perform_get_given_company_id() throws Exception {
@@ -114,6 +115,7 @@ public class CompanyControllerTest {
         //then
     }
 
+    //have problem
     @Test
     void should_return_new_company_when_perform_post_given_new_company() throws Exception {
         //given
@@ -130,25 +132,25 @@ public class CompanyControllerTest {
                 .andExpect((jsonPath("$.companyName").value("Anna Ltd")));
     }
 
-//    @Test
-//    void should_update_company_when_peform_put_given_company_Id_and_updated_Company() throws Exception {
-//        //given
-//        Company company = new Company("1", "Anna Ltd");
-//        String updatedCompany = "{\n" +
-//                "    \"id\": 1,\n" +
-//                "    \"companyName\": \"Bnnb Ltd\"\n" +
-//                "}";
-//
-//        companyRepository.create(company);
-//
-//        //when
-//        mockMvc.perform(MockMvcRequestBuilders.put(COMPANIES_ENDPOINT + "/{id}", company.getId())
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(updatedCompany))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.id").value(1))
-//                .andExpect(jsonPath("$.companyName").value("Bnnb Ltd"));
-//    }
+    @Test
+    void should_update_company_when_peform_put_given_company_Id_and_updated_Company() throws Exception {
+        //given
+        Company company = new Company("Anna Ltd");
+        companyRepositoryNew.insert(company);
+        String updatedCompany = "{\n" +
+                "    \"id\": 1,\n" +
+                "    \"companyName\": \"Bnnb Ltd\"\n" +
+                "}";
+
+
+
+        //when
+        mockMvc.perform(MockMvcRequestBuilders.put(COMPANIES_ENDPOINT + "/{id}", company.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(updatedCompany))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.companyName").value("Bnnb Ltd"));
+    }
 //
 //    @Test
 //    void should_delete_company_when_perform_delete_given_company_id() throws Exception {

@@ -10,12 +10,15 @@ import java.util.List;
 public class Company {
     @MongoId(FieldType.OBJECT_ID)
     private String id;
-    private String companyName;
-    private List<Employee> employees;
+    private String name;
+    private List<Employee> employeeList;
 
-    public Company(String id, String companyName){
+    public Company(String id, String name){
         this.id = id;
-        this.companyName = companyName;
+        this.name = name;
+    }
+    public Company(String name){
+        this.name = name;
     }
 
     public Company() {
@@ -30,18 +33,18 @@ public class Company {
     }
 
     public String getCompanyName() {
-        return companyName;
+        return name;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+    public void setCompanyName(String name) {
+        this.name = name;
     }
 
     public List<Employee> getEmployees() {
-        return employees;
+        return employeeList;
     }
 
     public void setEmployees(List<Employee> employees) {
-        this.employees = employees;
+        this.employeeList = employees;
     }
 }

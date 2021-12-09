@@ -17,9 +17,10 @@ public class CompanyService {
     private CompanyRepositoryNew companyRepositoryNew;
     private EmployeeRepositoryNew employeeRepositoryNew;
 
-    public CompanyService(CompanyRepository companyRepository, CompanyRepositoryNew companyRepositoryNew){
+    public CompanyService(CompanyRepository companyRepository, CompanyRepositoryNew companyRepositoryNew, EmployeeRepositoryNew employeeRepositoryNew){
         this.companyRepository = companyRepository;
         this.companyRepositoryNew = companyRepositoryNew;
+        this.employeeRepositoryNew = employeeRepositoryNew;
     }
 
     public List<Company> findAllCompanies() {
@@ -54,10 +55,6 @@ public class CompanyService {
     }
 
     public List<Employee> getEmployeeListByCompany(String companyId){
-        List<Employee> employeeList = employeeRepositoryNew.findAllByCompanyId(companyId);
-        if(employeeList == null){
-            return null;
-        }
-        return employeeList;
+        return employeeRepositoryNew.findAllByCompanyId(companyId);
     }
 }

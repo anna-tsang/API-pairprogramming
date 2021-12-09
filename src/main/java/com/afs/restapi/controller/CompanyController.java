@@ -46,7 +46,6 @@ public class CompanyController {
 
     @GetMapping("/{id}")
     public CompanyResponse getCompanyById(@PathVariable String id){
-        List<Employee> employeeList = companyService.getEmployeeListByCompany(id);
         return companyMapper.toResponse(companyService.findByCompanyId(id), companyService.getEmployeeListByCompany(id));
     }
 

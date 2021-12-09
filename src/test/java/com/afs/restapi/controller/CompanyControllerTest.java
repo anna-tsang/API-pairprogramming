@@ -30,21 +30,11 @@ public class CompanyControllerTest {
     MockMvc mockMvc;
 
     @Autowired
-    CompanyRepository companyRepository;
-
-    @Autowired
-    EmployeeRepository employeeRepository;
-
-    @Autowired
     CompanyRepositoryNew companyRepositoryNew;
 
     @Autowired
     EmployeeRepositoryNew employeeRepositoryNew;
 
-    //GET "/employees"
-    //prepare data
-    //send request
-    //assertion
     @BeforeEach
     void cleanRepository(){
         companyRepositoryNew.deleteAll();
@@ -56,6 +46,8 @@ public class CompanyControllerTest {
         //given
         Company company = new Company("1", "Anna Ltd");
         companyRepositoryNew.insert(company);
+        Company companyB = new Company("2", "Bnna Ltd");
+        companyRepositoryNew.insert(companyB);
         //when
         //then
         mockMvc.perform(MockMvcRequestBuilders.get(COMPANIES_ENDPOINT))
@@ -67,45 +59,38 @@ public class CompanyControllerTest {
 //    @Test
 //    void should_return_company_when_perform_get_given_company_id() throws Exception {
 //        //given
-//        Company company = new Company("1", "Anna Ltd" );
-//        companyRepository.create(company);
-//        Company company2 = new Company("2", "Anna Company" );
-//        Employee employeeJohnson = new Employee("1","Johnson", 20,"F", 99999, "1");
-//        employeeRepository.create(employeeJohnson);
-//        companyRepository.create(company2);
+//        Company company = new Company(null, "Anna Ltd" );
+//        companyRepositoryNew.insert(company);
 //
 //        //when
 //        //then
 //        mockMvc.perform(MockMvcRequestBuilders.get(COMPANIES_ENDPOINT + "/{id}", company.getId()))
 //                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.id").isNumber())
-//                .andExpect((jsonPath("$.companyName").value("Anna Ltd")))
-//                .andExpect((jsonPath("$.employees[0].name").value("Johnson")))
-//                .andExpect((jsonPath("$.employees[0].id").value("1")));
+//                .andExpect(jsonPath("$.id").isString())
+//                .andExpect((jsonPath("$.companyName").value("Anna Ltd")));
 //    }
-//
-//    @Test
-//    void should_return_employee_list_when_perform_get_given_company_id() throws Exception {
-//        //given
-//        Employee employeeAnna = new Employee(null,"Anna", 20,"M", 20, "1");
-//        employeeRepository.create(employeeAnna);
-//        Employee employeeJohnson = new Employee(null,"Johnson", 20,"F", 99999, "1");
-//        employeeRepository.create(employeeJohnson);
-//
-//        Company company1 = new Company("1", "Anna Ltd");
-//        companyRepository.create(company1);
-//        Company company2 = new Company("2", "Anna Company");
-//        companyRepository.create(company2);
-//        //when
-//        //then
-//        mockMvc.perform((MockMvcRequestBuilders.get(COMPANIES_ENDPOINT + "/{id}/employees", company1.getId())))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$[0].id").isNumber())
-//                .andExpect((jsonPath("$[0].name")).value("Anna"))
-//                .andExpect((jsonPath("$[0].age").value(20)))
-//                .andExpect((jsonPath("$[0].gender").value("M")))
-//                .andExpect((jsonPath("$[0].salary").value(20)));
-//    }
+
+    @Test
+    void should_return_employee_list_when_perform_get_given_company_id() throws Exception {
+        //given
+        Employee employeeAnna = new Employee(null,"Anna", 20,"M", 20, "1");
+        employeeRepositoryNew.insert(employeeAnna);
+        Employee employeeJohnson = new Employee(null,"Johnson", 20,"F", 99999, "1");
+        employeeRepositoryNew.insert(employeeJohnson);
+
+        Company company1 = new Company("1", "Anna Ltd");
+        companyRepositoryNew.insert(company1);
+        Company company2 = new Company("2", "Anna Company");
+        companyRepositoryNew.insert(company2);
+        //when
+        //then
+        mockMvc.perform((MockMvcRequestBuilders.get(COMPANIES_ENDPOINT + "/{id}/employees", company1.getId())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").isString())
+                .andExpect((jsonPath("$[0].name")).value("Anna"))
+                .andExpect((jsonPath("$[0].age").value(20)))
+                .andExpect((jsonPath("$[0].gender").value("M")));
+    }
 //
 //    @Test
 //    void should_given_display_employee_list_when_perform_get_given_page_and_page_size() throws Exception {

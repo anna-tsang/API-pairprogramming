@@ -37,6 +37,10 @@ public class CompanyRepository {
         companyList.add(new Company(3, "Cnnc Ltd"));
     }
     public List<Company> findAll() {
+        companyList.forEach(company -> {
+            List<Employee> employeeList = employeeRepository.findEmployeeByCompanyId(company.getId());
+            company.setEmployees(employeeList);
+        });
         return companyList;
     }
 

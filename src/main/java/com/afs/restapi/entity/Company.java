@@ -32,11 +32,11 @@ public class Company {
         this.id = id;
     }
 
-    public String getCompanyName() {
+    public String getName() {
         return name;
     }
 
-    public void setCompanyName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -44,7 +44,7 @@ public class Company {
         return employeeList;
     }
 
-    public void setEmployees(List<Employee> employees) {
-        this.employeeList = employees;
+    public void setEmployees(List<Employee> employeeList) {
+        this.employeeList = employeeList;
     }
 }

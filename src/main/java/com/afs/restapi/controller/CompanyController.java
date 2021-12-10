@@ -70,8 +70,8 @@ public class CompanyController {
     @PutMapping("/{id}")
     public Company editCompany(@PathVariable String id, @RequestBody Company updatedCompany){
         Company company = companyService.findByCompanyId(id);
-        if(updatedCompany.getCompanyName() != null){
-            company.setCompanyName(updatedCompany.getCompanyName());
+        if(updatedCompany.getName() != null){
+            company.setName(updatedCompany.getName());
         }
         return companyService.edit(id,company);
     }

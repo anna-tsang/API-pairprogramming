@@ -29,8 +29,8 @@ public class CompanyService {
 
     public Company edit(String id, Company updatedCompany) {
         Company company = findByCompanyId(id);
-        if(updatedCompany.getCompanyName() != null){
-            company.setCompanyName(updatedCompany.getCompanyName());
+        if(updatedCompany.getName() != null){
+            company.setName(updatedCompany.getName());
         }
         if (updatedCompany.getEmployees() != null){
             company.setEmployees(updatedCompany.getEmployees());

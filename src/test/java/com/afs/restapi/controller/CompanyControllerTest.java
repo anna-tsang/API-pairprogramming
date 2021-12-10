@@ -51,7 +51,7 @@ public class CompanyControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get(COMPANIES_ENDPOINT))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").isString())
-                .andExpect((jsonPath("$[0].companyName").value("Anna Ltd")));
+                .andExpect((jsonPath("$[0].name").value("Anna Ltd")));
     }
 
     @Test
@@ -106,7 +106,7 @@ public class CompanyControllerTest {
                         .param("pageSize","2")))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").isString())
-                .andExpect((jsonPath("$[0].companyName").value("Cnna Company")))
+                .andExpect((jsonPath("$[0].name").value("Cnna Company")))
                 .andExpect((jsonPath("$[0].employees").value(IsNull.nullValue())));
         //then
     }
@@ -115,7 +115,7 @@ public class CompanyControllerTest {
     void should_return_new_company_when_perform_post_given_new_company() throws Exception {
         //given
         String newCompany = "{\n" +
-                                "    \"companyName\": \"Anna Ltd\"" +
+                                "    \"name\": \"Anna Ltd\"" +
                                 "}";
         //when
         //then
@@ -123,7 +123,7 @@ public class CompanyControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newCompany)))
                 .andExpect(status().isCreated())
-                .andExpect((jsonPath("$.companyName").value("Anna Ltd")));
+                .andExpect((jsonPath("$.name").value("Anna Ltd")));
     }
 
     @Test
@@ -133,7 +133,7 @@ public class CompanyControllerTest {
         companyRepositoryNew.insert(company);
         String updatedCompany = "{\n" +
                 "    \"id\": 1,\n" +
-                "    \"companyName\": \"Bnnb Ltd\"\n" +
+                "    \"name\": \"Bnnb Ltd\"\n" +
                 "}";
 
         //when
@@ -141,7 +141,7 @@ public class CompanyControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updatedCompany))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.companyName").value("Bnnb Ltd"));
+                .andExpect(jsonPath("$.name").value("Bnnb Ltd"));
     }
 
     @Test

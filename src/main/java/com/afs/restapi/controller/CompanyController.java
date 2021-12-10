@@ -39,17 +39,7 @@ public class CompanyController {
     }
 
     @GetMapping
-    public List<Company> getCompany(){
-        List<Company> companies = companyService.getCompanies();
-
-//        companies.forEach(company -> {
-//            List<Employee> employees = employeeService.findByCompanyId(company.getId());
-//            company.setEmployees(employees);
-//        });
-
-//        return companies.stream()
-//                .map(company -> companyMapper.toResponse(company, new ArrayList<>()))
-//                .collect(Collectors.toList());
+    public List<Company> getCompanies(){
         return companyService.getCompanies();
     }
 
@@ -68,7 +58,7 @@ public class CompanyController {
     }
 
     @GetMapping(params = {"page","pageSize"})
-    public List<Company> displayCompany(@RequestParam Integer page, @RequestParam Integer pageSize){
+    public List<Company> displayCompanies(@RequestParam Integer page, @RequestParam Integer pageSize){
         return companyService.displayCompany(page,pageSize);
     }
 
@@ -80,21 +70,12 @@ public class CompanyController {
 
     @PutMapping("/{id}")
     public Company editCompany(@PathVariable String id, @RequestBody Company updatedCompany){
-        Company company = companyService.getCompanyById(id);
-        if(updatedCompany.getCompanyName() != null){
-            company.setCompanyName(updatedCompany.getCompanyName());
-        }
-//        if(updatedCompany.getEmployees() != null){
-//            company.setEmployees(updatedCompany.getEmployees());
-//        }
-        return companyService.editCompany(id,company);
+        return companyService.editCompany(id, updatedCompany);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void deleteCompany(@PathVariable String id){
-//        Company company = companyService.getCompanyById(id);
-//        return companyService.deleteCompany(id);
         companyService.deleteCompany(id);
     }
 }

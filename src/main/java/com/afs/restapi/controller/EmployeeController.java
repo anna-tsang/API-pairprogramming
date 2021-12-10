@@ -2,7 +2,6 @@ package com.afs.restapi.controller;
 
 import com.afs.restapi.dto.EmployeeRequest;
 import com.afs.restapi.dto.EmployeeResponse;
-import com.afs.restapi.entity.Employee;
 import com.afs.restapi.mapper.EmployeeMapper;
 import com.afs.restapi.service.EmployeeService;
 import org.springframework.http.HttpStatus;
@@ -32,7 +31,7 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<EmployeeResponse> getEmployee(){
+    public List<EmployeeResponse> getEmployees(){
         return employeeService.findAll().stream()
                 .map(employee -> employeeMapper.toResponse(employee))
                 .collect(Collectors.toList());
@@ -65,21 +64,12 @@ public class EmployeeController {
 
     @PutMapping("/{id}")
     public EmployeeResponse editEmployee(@PathVariable String id, @RequestBody EmployeeRequest employeeRequest){
-//        Employee employee = employeeService.findById(id);
-//        if(updatedEmployee.getAge() != null){
-//            employee.setAge(updatedEmployee.getAge());
-//        }
-//        if(updatedEmployee.getSalary() != null){
-//            employee.setSalary(updatedEmployee.getSalary());
-//        }
         return employeeMapper.toResponse(employeeService.edit(id, employeeMapper.toEntity(employeeRequest)));
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void deleteEmployee(@PathVariable String id){
-        Employee employee = employeeService.findById(id);
         employeeService.delete(id);
-//        return employeeMapper.toResponse(employeeService.delete(id));
     }
 }

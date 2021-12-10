@@ -36,12 +36,4 @@ public class Company {
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
     }
-
-//    public List<Employee> getEmployees() {
-//        return employees;
-//    }
-
-//    public void setEmployees(List<Employee> employees) {
-//        this.employees = employees;
-//    }
 }

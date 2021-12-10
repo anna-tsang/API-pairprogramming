@@ -146,11 +146,10 @@ public class EmployeeControllerTest {
         Employee employeeAnna = new Employee("Anna", 20,"F", 99999, "1");
         mockEmployeeRepositoryNew.insert(employeeAnna);
         String updatedEmployee = "{\n" +
-                "        \"id\": \"1\",\n" +
                 "        \"name\": \"Anna\",\n" +
                 "        \"age\": 29,\n" +
                 "        \"gender\": \"F\",\n" +
-                "        \"salary\": \"20\",\n" +
+                "        \"salary\": \"20\"\n" +
                 "    }";
         //when
         mockMvc.perform(MockMvcRequestBuilders.put(EMPLOYEE_ENDPOINT + "/{id}",employeeAnna.getId())
@@ -159,7 +158,7 @@ public class EmployeeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Anna"))
                 .andExpect(jsonPath("$.gender").value("F"))
-                .andExpect(jsonPath("$.age").value(20));
+                .andExpect(jsonPath("$.age").value(29));
     }
 
     @Test

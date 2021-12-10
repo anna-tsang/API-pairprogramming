@@ -70,15 +70,17 @@ public class CompanyControllerTest {
     @Test
     void should_return_employee_list_when_perform_get_given_company_id() throws Exception {
         //given
-        Employee employeeAnna = new Employee("Anna", 20,"M", 20, "1");
-        employeeRepositoryNew.insert(employeeAnna);
-        Employee employeeJohnson = new Employee("Johnson", 20,"F", 99999, "1");
-        employeeRepositoryNew.insert(employeeJohnson);
-
         Company company1 = new Company( "Anna Ltd");
         companyRepositoryNew.insert(company1);
         Company company2 = new Company( "Anna Company");
         companyRepositoryNew.insert(company2);
+
+        Employee employeeAnna = new Employee("Anna", 20,"M", 20, company1.getId());
+        employeeRepositoryNew.insert(employeeAnna);
+        Employee employeeJohnson = new Employee("Johnson", 20,"F", 99999, company1.getId());
+        employeeRepositoryNew.insert(employeeJohnson);
+
+
         //when
         //then
         mockMvc.perform((MockMvcRequestBuilders.get(COMPANIES_ENDPOINT + "/{id}/employees", company1.getId())))

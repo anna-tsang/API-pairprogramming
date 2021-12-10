@@ -55,6 +55,6 @@ public class CompanyService {
     }
 
     public List<Employee> getEmployeeListByCompany(String companyId){
-        return employeeRepositoryNew.findAllById(companyId);
+        return employeeRepositoryNew.findAllByCompanyId(companyId);
     }
 }

@@ -1,6 +1,8 @@
 package com.afs.restapi.service;
 
 import com.afs.restapi.entity.Employee;
+import com.afs.restapi.exception.CompanyNotFoundException;
+import com.afs.restapi.exception.EmployeeNotFoundException;
 import com.afs.restapi.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
@@ -187,6 +190,29 @@ public class EmployeeServiceTest {
         assertEquals(employeesWithCompanyId1.get(0).getSalary(), actual.get(0).getSalary());
         assertEquals(employeesWithCompanyId1.get(0).getCompanyId(), actual.get(0).getCompanyId());
         assertEquals(employeesWithCompanyId1.get(0).getAge(), actual.get(0).getAge());
+    }
+
+
+    // todo: create test case for exception
+
+    @Test
+    void should_throw_exception_when_get_employee_by_id_given_not_existed_employee_id() {
+        // given
+        String employeeId = "NOT_EXISTED_EMPLOYEE_ID";
+
+        given(employeeRepository.findById(any()))
+                .willThrow(new EmployeeNotFoundException());
+
+        String exceptionMsg = "Employee not found";
+
+        // when
+        // then
+
+        EmployeeNotFoundException exception = assertThrows(EmployeeNotFoundException.class, () -> {
+            employeeService.findById(employeeId);
+        });
+
+        assertEquals(exceptionMsg, exception.getMessage());
     }
 
 }

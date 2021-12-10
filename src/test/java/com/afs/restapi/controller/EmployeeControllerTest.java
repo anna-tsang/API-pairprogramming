@@ -184,7 +184,7 @@ public class EmployeeControllerTest {
     // todo: create test case for exception
 
     @Test
-    void should_throw_exception_when_perform_get_given_not_existed_company_id() throws Exception {
+    void should_throw_exception_when_perform_get_given_not_existed_employee_id() throws Exception {
         // given
         // when
         // then
@@ -193,6 +193,4 @@ public class EmployeeControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get(EMPLOYEE_ENDPOINT+"{/id}", emplyoeeId))
                     .andExpect(status().isNotFound());
     }
-
-
 }

@@ -46,6 +46,7 @@ public class CompanyServiceTest {
         List<Company> actual = companyService.getCompanies();
 
         // then
+        assertEquals(companies, actual);
         assertEquals(companies.get(0).getId(), actual.get(0).getId());
         assertEquals(companies.get(0).getCompanyName(), actual.get(0).getCompanyName());
     }
@@ -86,6 +87,7 @@ public class CompanyServiceTest {
 
         // when
         // then
+        assertEquals(companies, actual);
         assertEquals(companies.get(0).getId(), actual.get(0).getId());
         assertEquals(companies.get(0).getCompanyName(), actual.get(0).getCompanyName());
     }

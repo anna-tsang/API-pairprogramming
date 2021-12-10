@@ -148,6 +148,11 @@ public class EmployeeServiceTest {
         Employee newEmployee = new Employee(null ,"Anna", 20, "M", 100, "1");
         Employee actual = employeeService.create(newEmployee);
         assertEquals(employee, actual);
+        assertEquals(employee.getGender(), actual.getGender());
+        assertEquals(employee.getName(), actual.getName());
+        assertEquals(employee.getSalary(), actual.getSalary());
+        assertEquals(employee.getCompanyId(), actual.getCompanyId());
+        assertEquals(employee.getAge(), actual.getAge());
     }
 
     @Test
@@ -177,6 +182,11 @@ public class EmployeeServiceTest {
         // then
         List<Employee> actual = employeeService.findByCompanyId(employee.getCompanyId());
         assertEquals(employeesWithCompanyId1, actual);
+        assertEquals(employeesWithCompanyId1.get(0).getGender(), actual.get(0).getGender());
+        assertEquals(employeesWithCompanyId1.get(0).getName(), actual.get(0).getName());
+        assertEquals(employeesWithCompanyId1.get(0).getSalary(), actual.get(0).getSalary());
+        assertEquals(employeesWithCompanyId1.get(0).getCompanyId(), actual.get(0).getCompanyId());
+        assertEquals(employeesWithCompanyId1.get(0).getAge(), actual.get(0).getAge());
     }
 
 }

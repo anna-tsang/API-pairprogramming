@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import com.afs.restapi.entity.Company;
 import com.afs.restapi.entity.Employee;
+import com.afs.restapi.exception.CompanyNotFoundException;
 import com.afs.restapi.repository.CompanyRepository;
 import com.afs.restapi.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
@@ -140,5 +142,27 @@ public class CompanyServiceTest {
 
         verify(companyRepository).deleteById(company.getId());
     }
+
+    @Test
+    void should_throw_exception_when_get_company_by_id_given_not_existed_company_id() {
+        // given
+        String companyId = "NOT_EXISTED_COMPANY_ID";
+
+        given(companyRepository.findById(any()))
+                .willThrow(new CompanyNotFoundException());
+
+        String exceptionMsg = "Company Not Found";
+
+        // when
+        // then
+
+
+        CompanyNotFoundException exception = assertThrows(CompanyNotFoundException.class, () -> {
+            companyService.getCompanyById(companyId);
+        });
+
+        assertEquals(exceptionMsg, exception.getMessage());
+    }
+
 
 }

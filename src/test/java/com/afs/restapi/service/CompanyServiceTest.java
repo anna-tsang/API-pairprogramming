@@ -155,14 +155,10 @@ public class CompanyServiceTest {
 
         // when
         // then
-
-
         CompanyNotFoundException exception = assertThrows(CompanyNotFoundException.class, () -> {
             companyService.getCompanyById(companyId);
         });
 
         assertEquals(exceptionMsg, exception.getMessage());
     }
-
-
 }

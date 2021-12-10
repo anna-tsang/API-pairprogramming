@@ -178,4 +178,7 @@ public class EmployeeControllerTest {
 
         assertEquals(0, employeeRepository.findAll().size());
     }
+
+    // todo: create test case for exception
+
 }

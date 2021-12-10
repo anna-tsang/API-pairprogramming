@@ -173,4 +173,7 @@ public class CompanyControllerTest {
 
         assertEquals(--size, companyRepository.findAll().size());
     }
+
+
+    // todo: create test case for exception
 }

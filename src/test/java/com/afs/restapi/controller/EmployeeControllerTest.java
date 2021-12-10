@@ -1,6 +1,7 @@
 package com.afs.restapi.controller;
 
 import com.afs.restapi.entity.Employee;
+import com.afs.restapi.exception.CompanyNotFoundException;
 import com.afs.restapi.repository.EmployeeRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -180,5 +182,17 @@ public class EmployeeControllerTest {
     }
 
     // todo: create test case for exception
+
+    @Test
+    void should_throw_exception_when_perform_get_given_not_existed_company_id() throws Exception {
+        // given
+        // when
+        // then
+        String emplyoeeId = "NOT_EXISTED";
+
+        mockMvc.perform(MockMvcRequestBuilders.get(EMPLOYEE_ENDPOINT+"{/id}", emplyoeeId))
+                    .andExpect(status().isNotFound());
+    }
+
 
 }

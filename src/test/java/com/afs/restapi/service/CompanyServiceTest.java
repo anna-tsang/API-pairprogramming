@@ -73,10 +73,10 @@ public class CompanyServiceTest {
     @Test
     void should_return_employee_list_when_perform_put_given_company_id() {
         //given
-        List<Employee> employees = Stream.of(new Employee("1","Anna",3,"female",2,"1"))
+        List<Employee> employees = Stream.of(new Employee("Anna",3,"female",2,"1"))
                 .collect(Collectors.toList());
         Company company = new Company("1","company");
-        given(mockEmployeeRepositoryNew.findAllByCompanyId("1"))
+        given(mockEmployeeRepositoryNew.findAllById("1"))
                 .willReturn(employees);
 
         //when

@@ -13,12 +13,12 @@ public class EmployeeRepository {
     private List<Employee> employeeList = new ArrayList<>();
 
     public EmployeeRepository(){
-        employeeList.add(new Employee ("1","Anna",20,"F",5000, "1"));
-        employeeList.add(new Employee ("2","Johnson",20,"M",4000, "1"));
-        employeeList.add(new Employee ("3","Apple",20,"F",4000, "1"));
-        employeeList.add(new Employee ("4","April",20,"M",4000, "2"));
-        employeeList.add(new Employee ("5","May",20,"M",4000, "2"));
-        employeeList.add(new Employee ("6","June",20,"M",4000, "3"));
+        employeeList.add(new Employee ("Anna",20,"F",5000, "1"));
+        employeeList.add(new Employee ("Johnson",20,"M",4000, "1"));
+        employeeList.add(new Employee ("Apple",20,"F",4000, "1"));
+        employeeList.add(new Employee ("April",20,"M",4000, "2"));
+        employeeList.add(new Employee ("May",20,"M",4000, "2"));
+        employeeList.add(new Employee ("June",20,"M",4000, "3"));
     }
 
     public List<Employee> findAll() {

@@ -38,7 +38,7 @@ public class EmployeeControllerTest {
     @Test
     void should_get_all_employees_when_perform_get_given_employees() throws Exception {
         //given
-        Employee employee = new Employee("1","Anna", 20,"F", 99999, "1");
+        Employee employee = new Employee("Anna", 20,"F", 99999, "1");
         mockEmployeeRepositoryNew.insert(employee);
         //when
         //then
@@ -72,7 +72,7 @@ public class EmployeeControllerTest {
     @Test
     void should_return_employee_when_perform_get_given_employee_id() throws Exception {
         //given
-        Employee employee = new Employee(null,"Anna", 20,"F", 99999, "1");
+        Employee employee = new Employee("Anna", 20,"F", 99999, "1");
         mockEmployeeRepositoryNew.insert(employee);
 
         //when
@@ -88,9 +88,9 @@ public class EmployeeControllerTest {
     @Test
     void should_return_employees_when_perform_get_given_employee_gender() throws Exception {
         //given
-        Employee employeeAnna = new Employee("1","Anna", 20,"F", 99999, "1");
+        Employee employeeAnna = new Employee("Anna", 20,"F", 99999, "1");
         mockEmployeeRepositoryNew.insert(employeeAnna);
-        Employee employeeJohnson = new Employee("2","Johnson", 20,"F", 99999, "1");
+        Employee employeeJohnson = new Employee("Johnson", 20,"F", 99999, "1");
         mockEmployeeRepositoryNew.insert(employeeJohnson);
         //when
         mockMvc.perform(MockMvcRequestBuilders.get(EMPLOYEE_ENDPOINT).param("gender","F"))
@@ -108,15 +108,15 @@ public class EmployeeControllerTest {
     @Test
     void should_return_employees_when_perform_get_given_page_and_pageSize() throws Exception {
         //given
-        Employee employeeAnna = new Employee("1","Anna", 20,"M", 20, "1");
+        Employee employeeAnna = new Employee("Anna", 20,"M", 20, "1");
         mockEmployeeRepositoryNew.insert(employeeAnna);
-        Employee employeeJohnson = new Employee("2","Johnson", 20,"F", 99999, "1");
+        Employee employeeJohnson = new Employee("Johnson", 20,"F", 99999, "1");
         mockEmployeeRepositoryNew.insert(employeeJohnson);
-        Employee employeeGloria = new Employee("3","Gloria", 20,"M", 745, "1");
+        Employee employeeGloria = new Employee("Gloria", 20,"M", 745, "1");
         mockEmployeeRepositoryNew.insert(employeeGloria);
-        Employee employeeBnna = new Employee("4","Bnna", 20,"F", 5, "1");
+        Employee employeeBnna = new Employee("Bnna", 20,"F", 5, "1");
         mockEmployeeRepositoryNew.insert(employeeBnna);
-        Employee employeeCnna = new Employee("5","Cnna", 20,"F", 99999, "1");
+        Employee employeeCnna = new Employee("Cnna", 20,"F", 99999, "1");
         mockEmployeeRepositoryNew.insert(employeeCnna);
 
         //when
@@ -143,7 +143,7 @@ public class EmployeeControllerTest {
     @Test
     void should_return_updated_employee_when_perform_put_given_updated_employee() throws Exception {
         //given
-        Employee employeeAnna = new Employee("1","Anna", 20,"F", 99999, "1");
+        Employee employeeAnna = new Employee("Anna", 20,"F", 99999, "1");
         mockEmployeeRepositoryNew.insert(employeeAnna);
         String updatedEmployee = "{\n" +
                 "        \"id\": \"1\",\n" +
@@ -165,7 +165,7 @@ public class EmployeeControllerTest {
     @Test
     void should_delete_employee_when_perform_delete_given_employee_id() throws Exception {
         //given
-        Employee saveEmployee = mockEmployeeRepositoryNew.save(new Employee(null,"Anna", 20,"F", 99999, "1"));
+        Employee saveEmployee = mockEmployeeRepositoryNew.save(new Employee("Anna", 20,"F", 99999, "1"));
 
         //when
         //then

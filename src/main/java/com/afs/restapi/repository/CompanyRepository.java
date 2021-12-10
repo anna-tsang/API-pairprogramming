@@ -20,21 +20,21 @@ public class CompanyRepository {
 
     public CompanyRepository(){
         List<Employee> employeeListOfCompanyA = new ArrayList<>();
-        Employee employeeAnna = new Employee ("1","Anna",20,"F",5000,"1");
-        Employee employeeJohnson = new Employee ("2","Johnson",20,"M",4000,"1");
-        Employee employeeApple = new Employee ("3","Apple",20,"F",4000,"1");
-        companyList.add(new Company("1", "Anna Ltd"));
+        Employee employeeAnna = new Employee ("Anna",20,"F",5000,"1");
+        Employee employeeJohnson = new Employee ("Johnson",20,"M",4000,"1");
+        Employee employeeApple = new Employee ("Apple",20,"F",4000,"1");
+        companyList.add(new Company( "Anna Ltd"));
 
         List<Employee> employeeListOfCompanyB = new ArrayList<>();
-        Employee employeeKandy = new Employee ("1","Kandy",20,"F",5000,"2");
-        Employee employeeRaymon = new Employee ("2","Raymon",20,"M",4000,"2");
-        companyList.add(new Company("2", "Bnnb Ltd"));
+        Employee employeeKandy = new Employee ("Kandy",20,"F",5000,"2");
+        Employee employeeRaymon = new Employee ("Raymon",20,"M",4000,"2");
+        companyList.add(new Company( "Bnnb Ltd"));
 
         List<Employee> employeeListOfCompanyC = new ArrayList<>();
-        Employee employeeBnnb = new Employee ("1","Bnnb",20,"F",5000,"3");
-        Employee employeeCnnc = new Employee ("2","Cnnc",20,"M",4000,"3");
-        Employee employeeDnnd = new Employee ("3","Dnnd",20,"F",4000,"3");
-        companyList.add(new Company("3", "Cnnc Ltd"));
+        Employee employeeBnnb = new Employee ("Bnnb",20,"F",5000,"3");
+        Employee employeeCnnc = new Employee ("Cnnc",20,"M",4000,"3");
+        Employee employeeDnnd = new Employee ("Dnnd",20,"F",4000,"3");
+        companyList.add(new Company( "Cnnc Ltd"));
     }
     public List<Company> findAll() {
         companyList.forEach(company -> {

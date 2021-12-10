@@ -32,7 +32,7 @@ public class EmployeeServiceTest {
     @Test
     void should_return_all_employees_when_find_all_given_employees() {
         //given
-        List<Employee> employees = Arrays.asList(new Employee("1", "Anna", 20, "F", 99999, "1")) ;
+        List<Employee> employees = Arrays.asList(new Employee( "Anna", 20, "F", 99999, "1")) ;
         given(mockEmployeeRepositoryNew.findAll())
                 .willReturn(employees);
         //when
@@ -45,10 +45,10 @@ public class EmployeeServiceTest {
     @Test
     void should_return_updated_employee_when_edit_employee_given_updated_employee() {
         //given
-        Employee employee = new Employee("1","Anna", 20, "F", 9999, "1");
-        Employee updatedEmployee = new Employee("1","Anna", 99, "F", 9999, "1");
+        Employee employee = new Employee("Anna", 20, "F", 9999, "1");
+        Employee updatedEmployee = new Employee("Anna", 99, "F", 9999, "1");
 
-        given(mockEmployeeRepositoryNew.findById("1"))
+        given(mockEmployeeRepositoryNew.findById(any()))
                 .willReturn(java.util.Optional.of(employee));
 
         employee.setAge(updatedEmployee.getAge());
@@ -67,10 +67,10 @@ public class EmployeeServiceTest {
     @Test
     void should_return_employee_when_perform_get_given_employee_id() {
         //given
-        Employee employee = new Employee("1", "Anna", 20, "M", 100, "1");
+        Employee employee = new Employee( "Anna", 20, "M", 100, "1");
 
         //when
-        given(mockEmployeeRepositoryNew.findById("1"))
+        given(mockEmployeeRepositoryNew.findById(any()))
                 .willReturn(java.util.Optional.of(employee));
 
         Employee actual = employeeService.findById(employee.getId());
@@ -82,8 +82,8 @@ public class EmployeeServiceTest {
     @Test
     void should_return_employees_when_perform_get_given_employee_gender() {
         //given
-        Employee employeeA = new Employee("1", "Anna", 20, "M", 100, "1");
-        Employee employeeB = new Employee("2", "Johnson", 20, "F", 10, "1");
+        Employee employeeA = new Employee( "Anna", 20, "M", 100, "1");
+        Employee employeeB = new Employee( "Johnson", 20, "F", 10, "1");
         List<Employee> employees = new ArrayList<>();
         employees.add(employeeA);
         employees.add(employeeB);
@@ -99,8 +99,8 @@ public class EmployeeServiceTest {
     @Test
     public void should_return_employees_when_get_given_page_and_page_size() {
         List<Employee> employees = new ArrayList<>();
-        Employee firstEmployee = new Employee("1", "jojo", 29, "Male", 1,"1");
-        Employee secondEmployee = new Employee("2", "john", 30, "Male", 66666,"1");
+        Employee firstEmployee = new Employee( "jojo", 29, "Male", 1,"1");
+        Employee secondEmployee = new Employee( "john", 30, "Male", 66666,"1");
         employees.add(firstEmployee);
         employees.add(secondEmployee);
         Pageable pageable = (Pageable) PageRequest.of(1,1);
@@ -117,7 +117,7 @@ public class EmployeeServiceTest {
     @Test
     void should_return_employee_when_perform_post_given_new_employee() {
         //given
-        Employee employee = new Employee("1" ,"Anna", 20, "M", 100, "1");
+        Employee employee = new Employee("Anna", 20, "M", 100, "1");
 
         //when
         given(mockEmployeeRepositoryNew.insert(employee))
@@ -131,7 +131,7 @@ public class EmployeeServiceTest {
     @Test
     void should_deleted_employee_when_perform_delete_given_employee_id() {
         //given
-        Employee employee = new Employee("1" ,"Anna", 20, "M", 100, "1");
+        Employee employee = new Employee("Anna", 20, "M", 100, "1");
         //when
         given(mockEmployeeRepositoryNew.findById(any()))
                 .willReturn(java.util.Optional.of(employee));

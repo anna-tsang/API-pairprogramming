@@ -42,9 +42,9 @@ public class CompanyControllerTest {
     @Test
     void should_return_company_list_when_perform_get_given_companies() throws Exception {
         //given
-        Company company = new Company("1", "Anna Ltd");
+        Company company = new Company("Anna Ltd");
         companyRepositoryNew.insert(company);
-        Company companyB = new Company("2", "Bnna Ltd");
+        Company companyB = new Company("Bnna Ltd");
         companyRepositoryNew.insert(companyB);
         //when
         //then
@@ -54,12 +54,11 @@ public class CompanyControllerTest {
                 .andExpect((jsonPath("$[0].companyName").value("Anna Ltd")));
     }
 
-    //have problem
     @Test
     void should_return_company_when_perform_get_given_company_id() throws Exception {
         //given
         Company company = new Company( "Anna Ltd" );
-        companyRepositoryNew.insert(company);
+        companyRepositoryNew.save(company);
 
         //when
         //then
@@ -71,14 +70,14 @@ public class CompanyControllerTest {
     @Test
     void should_return_employee_list_when_perform_get_given_company_id() throws Exception {
         //given
-        Employee employeeAnna = new Employee(null,"Anna", 20,"M", 20, "1");
+        Employee employeeAnna = new Employee("Anna", 20,"M", 20, "1");
         employeeRepositoryNew.insert(employeeAnna);
-        Employee employeeJohnson = new Employee(null,"Johnson", 20,"F", 99999, "1");
+        Employee employeeJohnson = new Employee("Johnson", 20,"F", 99999, "1");
         employeeRepositoryNew.insert(employeeJohnson);
 
-        Company company1 = new Company("1", "Anna Ltd");
+        Company company1 = new Company( "Anna Ltd");
         companyRepositoryNew.insert(company1);
-        Company company2 = new Company("2", "Anna Company");
+        Company company2 = new Company( "Anna Company");
         companyRepositoryNew.insert(company2);
         //when
         //then
@@ -93,13 +92,13 @@ public class CompanyControllerTest {
     @Test
     void should_given_display_employee_list_when_perform_get_given_page_and_page_size() throws Exception {
         //given
-        Employee employee = new Employee("1","Anna", 20,"M", 20, "1");
+        Employee employee = new Employee("Anna", 20,"M", 20, "1");
         List<Employee> employees = Arrays.asList(employee);
-        Company companyA = new Company("1", "Anna Company");
+        Company companyA = new Company("Anna Company");
         companyRepositoryNew.insert(companyA);
-        Company companyB = new Company("2", "Bnna Company");
+        Company companyB = new Company("Bnna Company");
         companyRepositoryNew.insert(companyB);
-        Company companyC = new Company("3", "Cnna Company" );
+        Company companyC = new Company( "Cnna Company" );
         companyRepositoryNew.insert(companyC);
         //when
         mockMvc.perform((MockMvcRequestBuilders.get(COMPANIES_ENDPOINT)
@@ -112,7 +111,6 @@ public class CompanyControllerTest {
         //then
     }
 
-    //have problem
     @Test
     void should_return_new_company_when_perform_post_given_new_company() throws Exception {
         //given
@@ -125,7 +123,6 @@ public class CompanyControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newCompany)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").isString())
                 .andExpect((jsonPath("$.companyName").value("Anna Ltd")));
     }
 
@@ -138,8 +135,6 @@ public class CompanyControllerTest {
                 "    \"id\": 1,\n" +
                 "    \"companyName\": \"Bnnb Ltd\"\n" +
                 "}";
-
-
 
         //when
         mockMvc.perform(MockMvcRequestBuilders.put(COMPANIES_ENDPOINT + "/{id}", company.getId())

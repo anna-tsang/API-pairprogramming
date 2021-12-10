@@ -174,6 +174,14 @@ public class CompanyControllerTest {
         assertEquals(--size, companyRepository.findAll().size());
     }
 
+    @Test
+    void should_throw_exception_when_perform_get_given_not_existed_company_id() throws Exception {
+        // given
+        // when
+        // then
+        String companyId = "NOT_EXISTED";
 
-    // todo: create test case for exception
+        mockMvc.perform(MockMvcRequestBuilders.get(COMPANIES_ENDPOINT+"{/id}", companyId))
+                .andExpect(status().isNotFound());
+    }
 }
